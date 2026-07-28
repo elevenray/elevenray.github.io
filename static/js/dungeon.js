@@ -104,8 +104,10 @@
 
     var rect = floor.getBoundingClientRect();
     var pxDelta = SPEED_PX_S * dt;
+    // Y is clamped to the floor band only — the top of the room is the
+    // back wall the portals are set into, not walkable space.
     pos.x = clamp(pos.x + (unitX * pxDelta / rect.width) * 100, 4, 96);
-    pos.y = clamp(pos.y + (unitY * pxDelta / rect.height) * 100, 6, 97);
+    pos.y = clamp(pos.y + (unitY * pxDelta / rect.height) * 100, 38, 97);
     applyPosition();
   }
 

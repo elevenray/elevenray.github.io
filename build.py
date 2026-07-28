@@ -50,9 +50,14 @@ def layout_portals(frames):
     for i, frame in enumerate(frames):
         t = 0.5 if n == 1 else i / (n - 1)
         frame["portal_x"] = round(10 + 80 * t, 1)
-        frame["portal_y"] = round(40 + 12 * (2 * t - 1) ** 2, 1)
+        # Anchored low enough that ~30% of each archway's own height overlaps
+        # the floor (see .back-wall's height in style.css) instead of sitting
+        # flush against a hard wall/floor seam. Kept nearly uniform across
+        # portals (not tied to the x-arc) so every one overflows by the same
+        # amount, not just the outer ones.
+        frame["portal_y"] = round(48 + 3 * (2 * t - 1) ** 2, 1)
         archway, portal_color = ARCHWAY_THEMES[i % len(ARCHWAY_THEMES)]
-        frame["archway"] = archway
+        frame["archway"] = f"{archway}?v={file_hash(ROOT / archway)}"
         frame["portal_color"] = portal_color
     return frames
 

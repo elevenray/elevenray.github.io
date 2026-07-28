@@ -108,7 +108,7 @@ body {
 
 .dungeon-frame {
   position: relative;
-  width: min(96%, 900px);
+  width: min(96%, 960px);
   aspect-ratio: 16 / 10;
   margin: 0 auto;
   padding: 26px;
@@ -153,7 +153,7 @@ body {
   background-size: 64px 64px;
   image-rendering: pixelated;
   transform-origin: bottom center;
-  transform: rotateX(55deg);
+  transform: rotateX(60deg);
 }
 
 .floor-surface::after {
@@ -177,7 +177,7 @@ body {
   left: 0;
   right: 0;
   top: 0;
-  height: 50%;
+  height: 40%;
   background-image: url('../images/cave/wall-tile.png');
   background-size: 40px 40px;
   image-rendering: pixelated;
@@ -188,6 +188,43 @@ body {
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, rgba(6,4,3,0.35) 0%, transparent 55%, rgba(6,4,3,0.7) 100%);
+}
+
+/* Angled side walls: a trapezoid clipped from a plain texture strip fakes
+   perspective (wide/near at the bottom, narrow/far at the top) without any
+   real 3D transform, so it lines up with the floor's own vanishing point. */
+.side-wall {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6%;
+  background-image: url('../images/cave/wall-tile.png');
+  background-size: 34px 34px;
+  image-rendering: pixelated;
+}
+
+.side-wall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.side-wall--left {
+  left: 0;
+  clip-path: polygon(0 0, 100% 34%, 100% 100%, 0 100%);
+}
+
+.side-wall--left::after {
+  background: linear-gradient(to right, rgba(6,4,3,0.7), transparent 70%);
+}
+
+.side-wall--right {
+  right: 0;
+  clip-path: polygon(0 34%, 100% 0, 100% 100%, 0 100%);
+}
+
+.side-wall--right::after {
+  background: linear-gradient(to left, rgba(6,4,3,0.7), transparent 70%);
 }
 
 .wall-torch {
@@ -295,6 +332,33 @@ body {
   z-index: 2;
 }
 
+/* A colored light pool spilling from the doorway onto the floor in front
+   of it — guarantees every portal reads as "glowing energy meets ground"
+   regardless of how much ground detail its own archway art happens to
+   render. Sits behind .portal-arch (painted first) and is not clipped by
+   the button's own box. */
+.portal::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8%;
+  width: 150%;
+  height: 45%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, var(--accent, var(--accent-fallback)) 0%, transparent 72%);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  filter: blur(3px);
+  pointer-events: none;
+  z-index: -1;
+  animation: ground-glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes ground-glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.65; }
+}
+
 .portal-arch {
   position: relative;
   display: block;
@@ -322,8 +386,8 @@ body {
   position: absolute;
   left: 50%;
   top: 82%;
-  width: clamp(48px, 7vw, 72px);
-  height: clamp(48px, 7vw, 72px);
+  width: clamp(72px, 10.5vw, 108px);
+  height: clamp(72px, 10.5vw, 108px);
   transform: translate(-50%, -68%);
   z-index: 3;
   pointer-events: none;
@@ -572,6 +636,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .room, .vignette, .dungeon-frame { transition-duration: 0.2s !important; }
   .dungeon--transitioning .dungeon-frame { transform: none; filter: none; }
-  .portal { animation: none !important; }
+  .portal, .portal::before { animation: none !important; }
   .player--walking .player-sprite { animation: none !important; }
 }
