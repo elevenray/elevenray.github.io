@@ -28,6 +28,35 @@ def file_hash(path):
     return hashlib.sha1(path.read_bytes()).hexdigest()[:10]
 
 
+# Each portal's archway image paired with a matching accent color (picked to
+# match that archway's own glow), so the portal you see and the room/UI color
+# it opens into are always the same — independent of content/frames.py's own
+# "accent" field, which is unrelated per-project branding, not a portal skin.
+ARCHWAY_THEMES = [
+    ("static/images/cave/archway-green.png", "#4ade80"),
+    ("static/images/cave/archway-blue.png", "#4fd2e8"),
+    ("static/images/cave/archway-orange.png", "#ff8c3c"),
+    ("static/images/cave/archway-purple.png", "#b06bf0"),
+    ("static/images/cave/archway-gold.png", "#f5c451"),
+]
+
+
+def layout_portals(frames):
+    """Arrange N portals along a shallow concave arc across the back of the
+    dungeon room, evenly spaced left-to-right with the outer ones pulled
+    slightly toward the player. Returns frames with portal_x/portal_y (% of
+    the room) set, so content/frames.py can stay pure content."""
+    n = len(frames)
+    for i, frame in enumerate(frames):
+        t = 0.5 if n == 1 else i / (n - 1)
+        frame["portal_x"] = round(10 + 80 * t, 1)
+        frame["portal_y"] = round(40 + 12 * (2 * t - 1) ** 2, 1)
+        archway, portal_color = ARCHWAY_THEMES[i % len(ARCHWAY_THEMES)]
+        frame["archway"] = archway
+        frame["portal_color"] = portal_color
+    return frames
+
+
 def build():
     if DIST_DIR.exists():
         shutil.rmtree(DIST_DIR)
@@ -39,12 +68,12 @@ def build():
     # never serve a stale copy after content changes.
     asset_version = {
         "css": file_hash(STATIC_DIR / "css" / "style.css"),
-        "js": file_hash(STATIC_DIR / "js" / "gallery.js"),
+        "js": file_hash(STATIC_DIR / "js" / "dungeon.js"),
     }
 
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)))
     template = env.get_template("index.html.j2")
-    html = template.render(site=SITE, frames=FRAMES, asset_version=asset_version)
+    html = template.render(site=SITE, frames=layout_portals(FRAMES), asset_version=asset_version)
     (DIST_DIR / "index.html").write_text(html, encoding="utf-8")
 
     print(f"Built site into {DIST_DIR}")

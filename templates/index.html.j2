@@ -5,182 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ site.title }}</title>
 <meta name="description" content="{{ site.tagline }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/css/style.css?v={{ asset_version.css }}">
 </head>
 <body>
 
-<div class="hallway-bg" aria-hidden="true"></div>
-
 <header class="intro">
   <h1>{{ site.name }}</h1>
-  <p class="tagline">{{ site.tagline }}</p>
-  <p class="hint">Move your mouse to browse &middot; click a frame to step inside.</p>
+  <p class="portal-name" id="portal-name" aria-live="polite"></p>
+  <p class="hint hint--keys">WASD or arrow keys to move &middot; Enter to step through a portal</p>
+  <p class="hint hint--touch">Drag the floor to walk &middot; tap a portal to enter</p>
 </header>
 
-<main class="gallery" id="gallery">
-  <button class="nav-arrow nav-arrow--left" id="nav-prev" aria-label="Previous piece">&#8249;</button>
-  <div class="stage" id="stage">
-    {% for frame in frames %}
-    <button
-      class="frame"
-      id="{{ frame.id }}"
-      data-target="room-{{ frame.id }}"
-      data-index="{{ loop.index0 }}"
-      style="--accent: {{ frame.accent }};"
-      aria-label="Enter {{ frame.company }}"
-    >
-      <span class="frame-outer">
-        <span class="frame-dentil">
-          <span class="frame-bead">
-            <span class="frame-mat">
-              <span class="frame-liner">
-                <span class="frame-canvas">
-                  {% if frame.image %}
-                  <img class="frame-image" src="{{ frame.image }}" alt="{{ frame.company }} screenshot">
-                  {% else %}
-                  <span class="frame-glow"></span>
-                  <span class="frame-title">{{ frame.company }}</span>
-                  {% endif %}
-                </span>
-              </span>
-            </span>
-          </span>
-        </span>
-      </span>
-      <span class="plaque">
-        <span class="plaque-title">{{ frame.company }}</span>
-        {% if frame.role %}<span class="plaque-sub">{{ frame.role }}</span>{% endif %}
-      </span>
-    </button>
-    {% endfor %}
+<main class="dungeon" id="dungeon">
+  <div class="dungeon-frame">
+    <div class="dungeon-room" id="room-floor">
+      <div class="floor-surface" aria-hidden="true"></div>
+      <div class="back-wall" aria-hidden="true"></div>
+
+      <div class="wall-torch" style="left: 20%;" aria-hidden="true"></div>
+      <div class="wall-torch" style="left: 40%;" aria-hidden="true"></div>
+      <div class="wall-torch" style="left: 60%;" aria-hidden="true"></div>
+      <div class="wall-torch" style="left: 80%;" aria-hidden="true"></div>
+
+      <div class="cave-prop cave-prop--katana" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--kabuto" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--chest" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--gold" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--barrel" aria-hidden="true"></div>
+
+      {% for frame in frames %}
+      <button
+        class="portal"
+        id="{{ frame.id }}"
+        data-target="room-{{ frame.id }}"
+        data-title="{{ frame.company }}"
+        data-role="{{ frame.role }}"
+        style="--accent: {{ frame.portal_color }}; left: {{ frame.portal_x }}%; top: {{ frame.portal_y }}%;"
+        aria-label="Enter {{ frame.company }}"
+      >
+        <span class="portal-arch" style="background-image: url('{{ frame.archway }}');"></span>
+      </button>
+      {% endfor %}
+
+      <div class="player" id="player">
+        <img class="player-sprite" id="player-sprite" src="static/images/visitor/south-static.png" alt="">
+      </div>
+
+      <div class="interact-hint" id="interact-hint" aria-hidden="true">
+        <kbd>Enter</kbd><span class="interact-hint-touch">tap</span>
+      </div>
+    </div>
   </div>
-  <button class="nav-arrow nav-arrow--right" id="nav-next" aria-label="Next piece">&#8250;</button>
+
+  <div class="touch-controls" id="touch-controls" aria-hidden="true">
+    <button class="touch-btn touch-btn--interact" id="touch-interact" aria-label="Interact with nearest portal">&#9166;</button>
+  </div>
 </main>
 
-<div class="observatory" id="observatory" aria-hidden="true">
-  <div class="bench" id="bench">
-    <span class="bench-arm bench-arm--l"></span>
-    <span class="bench-seat"></span>
-    <span class="bench-arm bench-arm--r"></span>
-    <span class="bench-leg bench-leg--l"></span>
-    <span class="bench-leg bench-leg--r"></span>
-  </div>
-  <div class="visitor" id="visitor">
-    <svg class="visitor-svg" viewBox="0 0 40 56" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
-      <!-- Pixel-art runner: brown messy hair, red tee, jeans, boots. Head +
-           torso are static. Arms/legs are two-segment rigs — an
-           upper group that swings from the shoulder/hip, containing a
-           nested forearm/shin group that bends at the elbow/knee — so the
-           walk has real secondary joint motion instead of stiff pendulums
-           (see .char-arm/.char-leg/.char-forearm/.char-shin in style.css). -->
-      <g class="pose pose-stand">
-        <g class="char-leg char-leg--l">
-          <rect x="11" y="32" width="6" height="7" class="char-jeans"/>
-          <rect x="11" y="32" width="2" height="7" class="char-jeans-dark"/>
-          <g class="char-shin char-shin--l">
-            <rect x="11" y="39" width="6" height="7" class="char-jeans"/>
-            <rect x="11" y="39" width="2" height="7" class="char-jeans-dark"/>
-            <rect x="10" y="46" width="8" height="6" class="char-boot"/>
-            <rect x="10" y="50" width="8" height="2" class="char-boot-dark"/>
-          </g>
-        </g>
-        <g class="char-leg char-leg--r">
-          <rect x="23" y="32" width="6" height="7" class="char-jeans"/>
-          <rect x="27" y="32" width="2" height="7" class="char-jeans-light"/>
-          <g class="char-shin char-shin--r">
-            <rect x="23" y="39" width="6" height="7" class="char-jeans"/>
-            <rect x="27" y="39" width="2" height="7" class="char-jeans-light"/>
-            <rect x="22" y="46" width="8" height="6" class="char-boot"/>
-            <rect x="22" y="50" width="8" height="2" class="char-boot-dark"/>
-          </g>
-        </g>
-        <g class="char-arm char-arm--l">
-          <rect x="6" y="19" width="5" height="4" class="char-shirt"/>
-          <rect x="6" y="23" width="5" height="5" class="char-skin"/>
-          <rect x="6" y="23" width="2" height="5" class="char-skin-dark"/>
-          <g class="char-forearm char-forearm--l">
-            <rect x="6" y="28" width="5" height="5" class="char-skin"/>
-            <rect x="6" y="28" width="2" height="5" class="char-skin-dark"/>
-            <rect x="6" y="33" width="5" height="2" class="char-skin-dark"/>
-          </g>
-        </g>
-        <g class="char-body">
-          <rect x="10" y="18" width="14" height="12" class="char-shirt"/>
-          <rect x="10" y="18" width="3" height="12" class="char-shirt-dark"/>
-          <rect x="21" y="18" width="3" height="12" class="char-shirt-light"/>
-          <rect x="10" y="30" width="14" height="2" class="char-belt"/>
-          <rect x="16" y="30" width="2" height="2" class="char-buckle"/>
-          <rect x="15" y="16" width="4" height="2" class="char-skin"/>
-          <rect x="12" y="8" width="10" height="8" class="char-skin"/>
-          <rect x="13" y="14" width="8" height="2" class="char-skin-dark"/>
-          <rect x="9" y="1" width="16" height="8" class="char-hair"/>
-          <rect x="9" y="7" width="16" height="2" class="char-hair-dark"/>
-          <rect x="11" y="0" width="7" height="2" class="char-hair-light"/>
-          <rect x="8" y="0" width="4" height="3" class="char-hair"/>
-          <rect x="12" y="-1" width="3" height="2" class="char-hair"/>
-          <rect x="15" y="0" width="4" height="3" class="char-hair"/>
-          <rect x="21" y="1" width="4" height="3" class="char-hair"/>
-          <rect x="13.5" y="11" width="2" height="2" class="char-eye"/>
-          <rect x="19.5" y="11" width="2" height="2" class="char-eye"/>
-          <rect x="16" y="14.5" width="3" height="1" class="char-mouth"/>
-        </g>
-        <g class="char-arm char-arm--r">
-          <rect x="23" y="19" width="5" height="4" class="char-shirt"/>
-          <rect x="23" y="23" width="5" height="5" class="char-skin"/>
-          <rect x="26" y="23" width="2" height="5" class="char-skin-light"/>
-          <g class="char-forearm char-forearm--r">
-            <rect x="23" y="28" width="5" height="5" class="char-skin"/>
-            <rect x="26" y="28" width="2" height="5" class="char-skin-light"/>
-            <rect x="23" y="33" width="5" height="2" class="char-skin-dark"/>
-          </g>
-        </g>
-      </g>
-
-      <!-- Sitting pose: same silhouette as standing, shifted down and with
-           legs/arms compressed short — bent knees resting on the bench. -->
-      <g class="pose pose-sit">
-        <rect x="11" y="48" width="6" height="4" class="char-jeans"/>
-        <rect x="11" y="48" width="2" height="4" class="char-jeans-dark"/>
-        <rect x="10" y="52" width="8" height="4" class="char-boot"/>
-        <rect x="10" y="54" width="8" height="2" class="char-boot-dark"/>
-        <rect x="23" y="48" width="6" height="4" class="char-jeans"/>
-        <rect x="27" y="48" width="2" height="4" class="char-jeans-light"/>
-        <rect x="22" y="52" width="8" height="4" class="char-boot"/>
-        <rect x="22" y="54" width="8" height="2" class="char-boot-dark"/>
-        <rect x="6" y="37" width="5" height="4" class="char-shirt"/>
-        <rect x="6" y="41" width="5" height="5" class="char-skin"/>
-        <rect x="6" y="41" width="2" height="5" class="char-skin-dark"/>
-        <rect x="6" y="46" width="5" height="2" class="char-skin-dark"/>
-        <rect x="10" y="36" width="14" height="10" class="char-shirt"/>
-        <rect x="10" y="36" width="3" height="10" class="char-shirt-dark"/>
-        <rect x="21" y="36" width="3" height="10" class="char-shirt-light"/>
-        <rect x="10" y="46" width="14" height="2" class="char-belt"/>
-        <rect x="16" y="46" width="2" height="2" class="char-buckle"/>
-        <rect x="15" y="34" width="4" height="2" class="char-skin"/>
-        <rect x="12" y="26" width="10" height="8" class="char-skin"/>
-        <rect x="13" y="32" width="8" height="2" class="char-skin-dark"/>
-        <rect x="9" y="19" width="16" height="8" class="char-hair"/>
-        <rect x="9" y="25" width="16" height="2" class="char-hair-dark"/>
-        <rect x="11" y="18" width="7" height="2" class="char-hair-light"/>
-        <rect x="8" y="18" width="4" height="3" class="char-hair"/>
-        <rect x="12" y="17" width="3" height="2" class="char-hair"/>
-        <rect x="15" y="18" width="4" height="3" class="char-hair"/>
-        <rect x="21" y="19" width="4" height="3" class="char-hair"/>
-        <rect x="13.5" y="29" width="2" height="2" class="char-eye"/>
-        <rect x="19.5" y="29" width="2" height="2" class="char-eye"/>
-        <rect x="16" y="32.5" width="3" height="1" class="char-mouth"/>
-        <rect x="23" y="37" width="5" height="4" class="char-shirt"/>
-        <rect x="23" y="41" width="5" height="5" class="char-skin"/>
-        <rect x="26" y="41" width="2" height="5" class="char-skin-light"/>
-        <rect x="23" y="46" width="5" height="2" class="char-skin-dark"/>
-      </g>
-    </svg>
-  </div>
-</div>
-
 {% for frame in frames %}
-<section class="room" id="room-{{ frame.id }}" style="--accent: {{ frame.accent }};">
-  <button class="room-back" aria-label="Back to gallery">&larr; Back to gallery</button>
+<section class="room" id="room-{{ frame.id }}" style="--accent: {{ frame.portal_color }};">
+  <button class="room-back" aria-label="Back to the dungeon">&larr; Back</button>
   <div class="room-content">
     <p class="room-period">{{ frame.period }}</p>
     <h2>{{ frame.company }}</h2>
@@ -210,6 +97,6 @@
   <p>{{ site.footer_note }} &middot; <a href="mailto:{{ site.email }}">{{ site.email }}</a> &middot; <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a></p>
 </footer>
 
-<script src="static/js/gallery.js?v={{ asset_version.js }}"></script>
+<script src="static/js/dungeon.js?v={{ asset_version.js }}"></script>
 </body>
 </html>

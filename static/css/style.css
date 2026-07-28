@@ -1,39 +1,19 @@
 :root {
-  --wall: #eceef0;
-  --wall-light: #ffffff;
-  --wall-shadow: #dadde0;
-  --marble: #e4e6e7;
-  --gold-hi: #eaddb8;
-  --gold: #ab8f5c;
-  --gold-deep: #7d6640;
-  --text: #212327;
-  --text-dim: #6b6e73;
-  --canvas-dark: #1c1e22;
-  --canvas-dark-2: #33363c;
-  --mat: #eeefec;
-  --mat-shadow: #d3d5d2;
-  --liner: #17181a;
-  --frame-w: 640px;
-  --frame-h: 400px;
-
-  --char-hair: #6b4423;
-  --char-hair-dark: #4a2f18;
-  --char-hair-light: #8a5a34;
-  --char-skin: #f0c39a;
-  --char-skin-dark: #d9a578;
-  --char-skin-light: #f9d9b5;
-  --char-shirt: #c1442e;
-  --char-shirt-dark: #9c3323;
-  --char-shirt-light: #dd6146;
-  --char-jeans: #33406e;
-  --char-jeans-dark: #262f52;
-  --char-jeans-light: #46568c;
-  --char-boot: #8a5a2b;
-  --char-boot-dark: #5c3a1a;
-  --char-belt: #241a10;
-  --char-buckle: #c9a35c;
-  --char-eye: #241a10;
-  --char-mouth: #8a4a3a;
+  --stone-dark: #1a150f;
+  --stone: #2a2118;
+  --stone-mid: #3c2f21;
+  --stone-light: #52412c;
+  --mortar: #100c08;
+  --floor: #33281b;
+  --floor-dark: #221a11;
+  --torch: #ff9d3d;
+  --torch-glow: #ffc773;
+  --parchment: #e9d9b4;
+  --text: #f1e7d0;
+  --text-dim: #b6a684;
+  --panel-bg: rgba(16, 12, 8, 0.94);
+  --panel-border: #6b5636;
+  --accent-fallback: #ffb85c;
 }
 
 * { box-sizing: border-box; }
@@ -41,9 +21,10 @@
 html, body {
   margin: 0;
   height: 100%;
-  background: var(--wall);
+  background: var(--stone-dark);
   color: var(--text);
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
   overflow-x: hidden;
 }
 
@@ -52,546 +33,405 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  background:
+    radial-gradient(ellipse 900px 500px at 50% 0%, rgba(255,157,61,0.08), transparent 60%),
+    linear-gradient(180deg, var(--stone) 0%, var(--stone-dark) 70%);
 }
 
-/* Ambient wall backdrop: bright neutral-white gallery plaster (Guggenheim-style) */
-.hallway-bg {
-  position: fixed;
-  inset: -5%;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 600px 380px at 50% 0%, rgba(255,255,255,0.9), transparent 65%),
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.025) 0 1px, transparent 1px 160px),
-    linear-gradient(180deg, var(--wall-light) 0%, var(--wall) 60%, var(--wall-shadow) 100%);
-  transition: transform 0.2s ease-out;
-  pointer-events: none;
-}
+/* --- Header --- */
 
 .intro {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 3rem 1.5rem 1rem;
+  padding: 2rem 1.5rem 0.5rem;
 }
 
 .intro h1 {
   margin: 0;
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-  letter-spacing: 0.04em;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.95rem, 3.6vw, 1.6rem);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
   font-weight: 400;
-  color: var(--text);
+  color: var(--parchment);
+  text-shadow: 0 2px 0 var(--mortar), 0 0 14px rgba(255,157,61,0.25);
+}
+
+.portal-name {
+  margin: 0.5rem 0 0;
+  min-height: 1.4rem;
+  font-size: 1.2rem;
+  color: var(--accent, var(--torch));
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.portal-name.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .intro .tagline {
-  margin: 0.4rem 0 0;
+  margin: 0.6rem 0 0;
   color: var(--text-dim);
-  font-style: italic;
+  font-size: 1.15rem;
 }
 
 .intro .hint {
-  margin: 0.6rem 0 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--gold-deep);
-  opacity: 0.85;
+  margin: 0.4rem 0 0;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--torch);
+  opacity: 0.9;
 }
 
-/* Gallery */
-.gallery {
+.hint--touch { display: none; }
+
+@media (pointer: coarse) {
+  .hint--keys { display: none; }
+  .hint--touch { display: block; }
+}
+
+/* --- Dungeon room --- */
+
+.dungeon {
   position: relative;
   z-index: 2;
   flex: 1;
-  display: flex;
-  align-items: stretch;
-  padding: 1rem 0 0;
-}
-
-.nav-arrow {
-  appearance: none;
-  border: 1px solid rgba(138,100,35,0.35);
-  background: rgba(255,255,255,0.5);
-  color: var(--gold-deep);
-  font-size: 1.6rem;
-  line-height: 1;
-  width: 44px;
-  cursor: pointer;
-  align-self: center;
-  border-radius: 2px;
-  z-index: 3;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.nav-arrow:hover { background: rgba(255,255,255,0.85); border-color: var(--gold); }
-
-.stage {
-  position: relative;
-  flex: 1;
-  overflow: visible;
-}
-
-.frame {
-  appearance: none;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  color: inherit;
-  font-family: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.94);
-  opacity: 0;
-  pointer-events: none;
-  transform-origin: center center;
-  transition: opacity 2.5s ease, transform 2.5s cubic-bezier(0.3, 0.1, 0.3, 1);
-  will-change: transform, opacity;
-  z-index: 1;
-}
-
-/* Directional slide: whichever side a frame is entering from or exiting
-   toward — used transiently during navigation so the change reads as
-   "sliding past" rather than fading in place. See gallery.js setActiveIndex. */
-.frame--offside-l {
-  transform: translate(-230%, -50%) scale(0.94);
-  opacity: 0;
-}
-
-.frame--offside-r {
-  transform: translate(130%, -50%) scale(0.94);
-  opacity: 0;
-}
-
-.frame.frame--active {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  pointer-events: auto;
-  z-index: 2;
-}
-
-.frame.frame--selected {
-  transform: translate(-50%, -50%) scale(9) !important;
-  transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1) !important;
-  opacity: 1 !important;
-  z-index: 50;
-}
-
-/* Museum spotlight: a soft pool of light thrown on the wall behind whichever
-   frame is active, echoing overhead gallery lighting. Fades with the frame. */
-.frame::before {
-  content: "";
-  position: absolute;
-  top: -14%;
-  left: -30%;
-  right: -30%;
-  height: 130%;
-  z-index: -1;
-  background: radial-gradient(ellipse 55% 60% at 50% 18%, rgba(255,255,255,0.95), rgba(255,255,255,0) 68%);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.frame--active::before {
-  opacity: 1;
-}
-
-/* Ornate carved gilt moulding: a busy floral/reeded outer carve, a dentil
-   (tooth) band, a bead ring, then a mat board and dark fillet around the
-   art — modeled after heavy antique museum frame profiles. */
-.frame-outer {
-  width: var(--frame-w);
-  height: var(--frame-h);
-  padding: 30px;
-  display: block;
-  border-radius: 1px;
-  background:
-    repeating-radial-gradient(circle at 9px 9px, rgba(255,255,255,0.4) 0 1.5px, transparent 1.5px 6px, rgba(0,0,0,0.12) 6px 6.5px, transparent 6.5px 12px),
-    repeating-linear-gradient(115deg, rgba(0,0,0,0.2) 0 2px, transparent 2px 7px),
-    linear-gradient(145deg, var(--gold-hi), var(--gold) 40%, var(--gold-deep) 75%, var(--gold-hi));
-  box-shadow:
-    inset 0 4px 4px rgba(255,255,255,0.55),
-    inset 0 -5px 6px rgba(0,0,0,0.4),
-    inset 4px 0 4px rgba(255,255,255,0.3),
-    inset -4px 0 6px rgba(0,0,0,0.35),
-    0 0 0 1px rgba(90,60,20,0.5),
-    0 32px 56px rgba(20,15,8,0.38),
-    0 8px 16px rgba(20,15,8,0.24);
-}
-
-.frame-dentil {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 9px 7px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--gold-deep) 0 6px,
-    var(--gold-hi) 6px 9px,
-    var(--gold-deep) 9px 10px,
-    transparent 10px 13px
-  );
-  background-color: var(--gold);
-  box-shadow:
-    inset 0 2px 2px rgba(255,255,255,0.45),
-    inset 0 -2px 3px rgba(0,0,0,0.35);
-}
-
-.frame-bead {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 6px;
-  border-radius: 1px;
-  background: linear-gradient(325deg, var(--gold-hi), var(--gold-deep) 45%, var(--gold) 80%);
-  box-shadow:
-    inset 0 0 0 2px rgba(60,40,10,0.35),
-    inset 2px 2px 3px rgba(255,255,255,0.35),
-    inset -2px -2px 3px rgba(0,0,0,0.3);
-}
-
-.frame-mat {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 30px;
-  background: var(--mat);
-  box-shadow:
-    inset 0 0 0 1px rgba(0,0,0,0.06),
-    inset 3px 3px 6px rgba(0,0,0,0.09),
-    inset -1px -1px 3px rgba(255,255,255,0.6);
-}
-
-.frame-liner {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 3px;
-  background: var(--liner);
-}
-
-.frame-canvas {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(ellipse at 50% 28%, rgba(255,255,255,0.12), transparent 55%),
-    linear-gradient(160deg, var(--canvas-dark-2), var(--canvas-dark) 75%);
-  overflow: hidden;
+  padding: 1rem 1rem 1.5rem;
 }
 
-.frame-glow {
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(circle, var(--accent, var(--gold)) 0%, transparent 65%);
-  opacity: 0.22;
-}
-
-.frame-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.frame-title {
+.dungeon-frame {
   position: relative;
-  z-index: 1;
-  font-size: 1.1rem;
-  text-align: center;
-  padding: 0 1.2rem;
-  color: #eceef2;
-  letter-spacing: 0.02em;
+  width: min(96%, 900px);
+  aspect-ratio: 16 / 10;
+  margin: 0 auto;
+  padding: 26px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  background-image: url('../images/cave/wall-tile.png');
+  background-size: 44px 44px;
+  image-rendering: pixelated;
+  box-shadow:
+    inset 0 0 0 4px var(--mortar),
+    0 0 0 4px var(--mortar),
+    0 24px 50px rgba(0,0,0,0.55);
+  transition: transform 0.8s ease, filter 0.8s ease;
 }
 
-.plaque {
-  margin-top: 1rem;
+.dungeon--transitioning .dungeon-frame {
+  transform: scale(1.15);
+  filter: brightness(1.4) saturate(1.3);
+}
+
+.dungeon-room {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+  touch-action: none;
+  perspective: 900px;
+  perspective-origin: 50% 8%;
+}
+
+/* The floor is a separate tilted plane behind everything else — portals,
+   props and the player stay flat/upright (billboarded) on top of it, so
+   only the ground itself reads as receding in 3D (HD-2D style). */
+.floor-surface {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -25%;
+  height: 150%;
+  background-image: url('../images/cave/floor-tile.png');
+  background-size: 64px 64px;
+  image-rendering: pixelated;
+  transform-origin: bottom center;
+  transform: rotateX(55deg);
+}
+
+.floor-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(6,4,3,0.65) 0%,
+    rgba(6,4,3,0.1) 35%,
+    rgba(6,4,3,0.05) 62%,
+    rgba(6,4,3,0.55) 100%
+  );
+}
+
+/* An upright (untilted) wall band behind the floor's far edge — this is
+   what the portals are mounted into, so they read as built into the room
+   rather than floating props on the ground. */
+.back-wall {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 50%;
+  background-image: url('../images/cave/wall-tile.png');
+  background-size: 40px 40px;
+  image-rendering: pixelated;
+}
+
+.back-wall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(6,4,3,0.35) 0%, transparent 55%, rgba(6,4,3,0.7) 100%);
+}
+
+.wall-torch {
+  position: absolute;
+  top: 3%;
+  width: clamp(20px, 3vw, 32px);
+  aspect-ratio: 40 / 64;
+  background-image: url('../images/cave/torch.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  image-rendering: pixelated;
+  transform: translate(-50%, 0);
+  filter: drop-shadow(0 0 8px rgba(255,157,61,0.55)) drop-shadow(1px 2px 1px rgba(0,0,0,0.6));
+  pointer-events: none;
+  animation: torch-flicker 1.8s ease-in-out infinite;
+}
+
+.wall-torch:nth-of-type(2n) { animation-delay: -0.6s; }
+.wall-torch:nth-of-type(3n) { animation-delay: -1.1s; }
+
+@keyframes torch-flicker {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(255,157,61,0.5)) brightness(1); }
+  50% { filter: drop-shadow(0 0 15px rgba(255,157,61,0.85)) brightness(1.15); }
+}
+
+.cave-prop {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  image-rendering: pixelated;
+  pointer-events: none;
+  filter: drop-shadow(2px 3px 1px rgba(0,0,0,0.5));
+}
+
+.cave-prop--katana {
+  left: 5%;
+  top: 82%;
+  width: clamp(36px, 5vw, 54px);
+  aspect-ratio: 64 / 96;
+  transform: translate(-50%, -100%);
+  background-image: url('../images/cave/katana-stand.png');
+}
+
+.cave-prop--kabuto {
+  left: 95%;
+  top: 88%;
+  width: clamp(40px, 5.5vw, 60px);
+  aspect-ratio: 72 / 72;
+  transform: translate(-50%, -100%);
+  background-image: url('../images/cave/kabuto.png');
+}
+
+.cave-prop--chest {
+  left: 22%;
+  top: 90%;
+  width: clamp(44px, 6vw, 66px);
+  aspect-ratio: 64 / 56;
+  transform: translate(-50%, -100%);
+  background-image: url('../images/cave/chest.png');
+}
+
+.cave-prop--gold {
+  left: 31%;
+  top: 95%;
+  width: clamp(38px, 5vw, 56px);
+  aspect-ratio: 56 / 32;
+  transform: translate(-50%, -100%);
+  background-image: url('../images/cave/gold-pile.png');
+}
+
+.cave-prop--barrel {
+  left: 68%;
+  top: 92%;
+  width: clamp(34px, 4.5vw, 50px);
+  aspect-ratio: 48 / 56;
+  transform: translate(-50%, -100%);
+  background-image: url('../images/cave/barrel.png');
+}
+
+.dungeon--transitioning .intro {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* --- Portals --- */
+
+.portal {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  position: absolute;
+  transform: translate(-50%, -100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.4rem 1.1rem;
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(138,100,35,0.3);
-  border-radius: 2px;
-  transition: opacity 0.4s ease, transform 0.3s ease;
-}
-
-.plaque-title {
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
-  color: var(--text);
-}
-
-.plaque-sub {
-  font-size: 0.68rem;
-  color: var(--text-dim);
-  margin-top: 0.1rem;
-}
-
-/* --- Transition: stepping into a frame --- */
-
-.gallery--transitioning .frame:not(.frame--selected) {
-  opacity: 0 !important;
-}
-
-.gallery--transitioning .intro,
-.gallery--transitioning .nav-arrow,
-.gallery--transitioning ~ .observatory {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.frame--selected .plaque {
-  opacity: 0;
-}
-
-.vignette {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  background: radial-gradient(circle at center, transparent 0%, rgba(14,15,17,0) 40%, #0c0d0f 100%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.9s ease;
-}
-
-.vignette--active {
-  opacity: 1;
-}
-
-/* --- Observatory bench: stationary, sits below the stage --- */
-
-.observatory {
-  position: relative;
+  width: clamp(60px, 9vw, 96px);
   z-index: 2;
-  height: 130px;
-  width: min(92%, 680px);
-  margin: 0 auto;
-  overflow: hidden;
-  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(226,214,187,0.85) 55%);
-  border-top: 1px solid rgba(138,100,35,0.15);
-  transition: opacity 0.4s ease;
 }
 
-.bench {
+.portal-arch {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 128 / 160;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.portal--near .portal-arch {
+  transform: scale(1.08);
+  filter:
+    drop-shadow(0 0 10px var(--accent, var(--accent-fallback)))
+    drop-shadow(0 0 22px var(--accent, var(--accent-fallback)))
+    drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+/* --- Player sprite --- */
+
+.player {
   position: absolute;
-  left: 0;
-  bottom: 26px;
-  width: 64px;
-  height: 15px;
+  left: 50%;
+  top: 82%;
+  width: clamp(48px, 7vw, 72px);
+  height: clamp(48px, 7vw, 72px);
+  transform: translate(-50%, -68%);
   z-index: 3;
-  transition: transform 2.5s cubic-bezier(0.3, 0.1, 0.3, 1);
+  pointer-events: none;
 }
 
-.bench-seat {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  background:
-    repeating-radial-gradient(circle at 8px 7px, rgba(0,0,0,0.2) 0 1px, transparent 1.5px 16px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.1) 0 1px, transparent 1px 16px),
-    linear-gradient(180deg, #b5473f, #7c1f24 55%, #56141a);
-  border-radius: 3px 3px 1px 1px;
-  box-shadow:
-    0 4px 10px rgba(30,10,12,0.4),
-    inset 0 -2px 2px rgba(0,0,0,0.25),
-    inset 0 1.5px 0 rgba(255,255,255,0.3);
-}
-
-.bench-seat::before {
-  content: "";
-  position: absolute;
-  left: 1px;
-  right: 1px;
-  top: -2px;
-  height: 2px;
-  border-radius: 1px;
-  background: linear-gradient(90deg, var(--gold-deep), var(--gold-hi), var(--gold-deep));
-}
-
-.bench-arm {
-  position: absolute;
-  bottom: 0;
-  width: 6px;
-  height: 20px;
-  background: linear-gradient(180deg, #b5473f, #611820);
-  border-radius: 3px 3px 1px 1px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.3),
-    inset 0 -2px 3px rgba(0,0,0,0.3),
-    0 0 0 1px rgba(60,15,20,0.4);
-}
-
-.bench-arm--l { left: -3px; }
-.bench-arm--r { right: -3px; }
-
-.bench-leg {
-  position: absolute;
-  bottom: -13px;
-  width: 5px;
-  height: 13px;
-  background: linear-gradient(180deg, #4d3319, #2c1c0d);
-  border-radius: 0 0 1px 1px;
-}
-
-.bench-leg::after {
-  content: "";
-  position: absolute;
-  left: -1px;
-  right: -1px;
-  bottom: -2px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--gold);
-}
-
-.bench-leg--l { left: 8px; }
-.bench-leg--r { right: 8px; }
-
-.visitor {
-  position: absolute;
-  bottom: 21px;
-  left: 0;
-  width: 65px;
-  height: 90px;
-  z-index: 2;
-  transition: transform 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.visitor-svg {
+.player-sprite {
   width: 100%;
   height: 100%;
   display: block;
-  overflow: visible;
-  filter: drop-shadow(1.5px 2px 0.5px rgba(20, 14, 10, 0.35));
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 3px 1px rgba(0,0,0,0.55));
 }
 
-.pose {
+.player--walking .player-sprite {
+  animation: player-bob 0.3s steps(1) infinite;
+}
+
+@keyframes player-bob {
+  50% { transform: translateY(-2px); }
+}
+
+.interact-hint {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  padding: 0.1rem 0.5rem;
+  background: var(--panel-bg);
+  border: 2px solid var(--torch);
+  color: var(--parchment);
+  font-size: 1rem;
+  white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 4;
 }
 
-.pose-stand {
-  opacity: 1;
-  transition: opacity 0.35s ease, transform 0.3s ease;
+.interact-hint.is-visible { opacity: 1; }
+
+.interact-hint kbd {
+  font-family: inherit;
+  background: var(--stone-light);
+  border-bottom: 2px solid var(--mortar);
+  padding: 0 0.3rem;
+  border-radius: 2px;
 }
 
-.visitor--sitting .pose-stand { opacity: 0; }
-.visitor--sitting .pose-sit { opacity: 1; }
+.interact-hint-touch { display: none; }
 
-/* Runner palette — a light/base/dark trio per material for shading */
-.char-hair { fill: var(--char-hair); }
-.char-hair-dark { fill: var(--char-hair-dark); }
-.char-hair-light { fill: var(--char-hair-light); }
-.char-skin { fill: var(--char-skin); }
-.char-skin-dark { fill: var(--char-skin-dark); }
-.char-skin-light { fill: var(--char-skin-light); }
-.char-shirt { fill: var(--char-shirt); }
-.char-shirt-dark { fill: var(--char-shirt-dark); }
-.char-shirt-light { fill: var(--char-shirt-light); }
-.char-jeans { fill: var(--char-jeans); }
-.char-jeans-dark { fill: var(--char-jeans-dark); }
-.char-jeans-light { fill: var(--char-jeans-light); }
-.char-boot { fill: var(--char-boot); }
-.char-boot-dark { fill: var(--char-boot-dark); }
-.char-belt { fill: var(--char-belt); }
-.char-buckle { fill: var(--char-buckle); }
-.char-eye { fill: var(--char-eye); }
-.char-mouth { fill: var(--char-mouth); }
-
-/* Jointed rig: each arm/leg is TWO nested groups — an upper segment that
-   swings from the shoulder/hip, containing a forearm/shin that bends at
-   the elbow/knee. The knee/elbow bend is phase-matched to its own parent
-   segment's swing (same base animation + delay) so the joint folds during
-   the airborne "swing" half of the stride and straightens on plant/push-off
-   — real secondary motion instead of a stiff single-pivot pendulum. */
-.char-arm, .char-leg, .char-forearm, .char-shin { transform-box: fill-box; }
-.char-arm--l, .char-arm--r, .char-leg--l, .char-leg--r,
-.char-forearm--l, .char-forearm--r, .char-shin--l, .char-shin--r { transform-origin: top center; }
-
-.visitor--walking .pose-stand {
-  transform: rotate(-5deg);
-  transform-origin: 50% 100%;
+@media (pointer: coarse) {
+  .interact-hint kbd { display: none; }
+  .interact-hint-touch { display: inline; }
 }
 
-.visitor--walking .char-body {
-  animation: char-bob 0.8s ease-in-out infinite alternate;
+/* --- Touch controls --- */
+
+.touch-controls {
+  display: none;
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 20;
 }
 
-.visitor--walking .char-leg--l,
-.visitor--walking .char-arm--r {
-  animation: char-swing 1.6s ease-in-out infinite;
+@media (pointer: coarse) {
+  .touch-controls { display: flex; }
 }
 
-.visitor--walking .char-leg--r,
-.visitor--walking .char-arm--l {
-  animation: char-swing 1.6s ease-in-out infinite;
-  animation-delay: -0.8s;
+.touch-btn {
+  appearance: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid var(--panel-border);
+  background: var(--panel-bg);
+  color: var(--torch);
+  font-size: 1.6rem;
+  cursor: pointer;
 }
 
-.visitor--walking .char-shin--l,
-.visitor--walking .char-forearm--r {
-  animation: char-knee 1.6s ease-in-out infinite;
-}
-
-.visitor--walking .char-shin--r,
-.visitor--walking .char-forearm--l {
-  animation: char-knee 1.6s ease-in-out infinite;
-  animation-delay: -0.8s;
-}
-
-@keyframes char-bob {
-  from { transform: translateY(0); }
-  to { transform: translateY(-2px); }
-}
-
-@keyframes char-swing {
-  0%, 100% { transform: rotate(-24deg); }
-  50% { transform: rotate(24deg); }
-}
-
-/* Bent through the airborne half of the stride (0-50%, matching char-swing's
-   back-to-forward sweep), straight through plant/push-off (50-100%). */
-@keyframes char-knee {
-  0% { transform: rotate(0deg); }
-  22% { transform: rotate(-40deg); }
-  50%, 100% { transform: rotate(0deg); }
-}
-
-/* --- Rooms (revealed after stepping into a frame) --- */
+/* --- Rooms (revealed after stepping through a portal) --- */
 
 .room {
   position: fixed;
   inset: 0;
   z-index: 30;
   display: flex;
-  align-items: center;
+  /* Top-aligned (not centered): centering a flex item taller than the
+     viewport leaves its overflow above scrollTop 0 unreachable, silently
+     clipping the start of long content. Starting from the top and letting
+     overflow-y scroll downward guarantees everything stays reachable. */
+  align-items: flex-start;
   justify-content: center;
-  padding: 4rem 1.5rem;
-  background: linear-gradient(160deg, var(--wall-light), var(--wall) 80%);
+  padding: 5rem 1.5rem 3rem;
+  background-color: var(--stone-dark);
+  background-image:
+    radial-gradient(ellipse 780px 460px at 50% -8%, color-mix(in srgb, var(--accent, var(--accent-fallback)) 50%, transparent) 0%, transparent 62%),
+    radial-gradient(ellipse 620px 380px at 50% 108%, color-mix(in srgb, var(--accent, var(--accent-fallback)) 28%, transparent) 0%, transparent 68%),
+    linear-gradient(180deg, rgba(8,6,4,0.88), rgba(8,6,4,0.88)),
+    url('../images/cave/wall-tile.png');
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+  background-size: auto, auto, auto, 88px 88px;
+  image-rendering: pixelated;
   color: var(--text);
   opacity: 0;
   visibility: hidden;
   transform: scale(1.06);
   transition: opacity 0.6s ease, transform 0.6s ease, visibility 0s linear 0.6s;
   overflow-y: auto;
-}
-
-.room::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 700px 400px at 50% 0%, var(--accent, var(--gold)), transparent 55%);
-  opacity: 0.10;
-  pointer-events: none;
 }
 
 .room--active {
@@ -606,18 +446,17 @@ body {
   top: 1.5rem;
   left: 1.5rem;
   appearance: none;
-  background: rgba(255,255,255,0.6);
-  border: 1px solid rgba(138,100,35,0.4);
-  color: var(--text);
+  background: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  color: var(--parchment);
   font-family: inherit;
-  font-size: 0.85rem;
-  padding: 0.5rem 1rem;
-  border-radius: 2px;
+  font-size: 1rem;
+  padding: 0.4rem 1rem;
   cursor: pointer;
   z-index: 2;
 }
 
-.room-back:hover { border-color: var(--accent, var(--gold)); }
+.room-back:hover { border-color: var(--accent, var(--accent-fallback)); }
 
 .room-content {
   position: relative;
@@ -627,36 +466,38 @@ body {
 
 .room-period {
   color: var(--text-dim);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0 0 0.5rem;
 }
 
 .room-content h2 {
   margin: 0;
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
   font-weight: 400;
+  color: var(--parchment);
 }
 
 .room-content h3 {
   margin: 0.3rem 0 0;
   font-weight: 400;
-  color: var(--gold-deep);
-  font-size: 1rem;
+  color: var(--accent, var(--torch));
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  font-size: 1.1rem;
 }
 
 .room-summary {
   margin-top: 1.4rem;
-  font-size: 1.1rem;
-  font-style: italic;
+  font-size: 1.3rem;
   color: var(--text);
 }
 
 .room-description {
   margin-top: 1rem;
   color: var(--text-dim);
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 1.15rem;
 }
 
 .room-tags {
@@ -670,10 +511,9 @@ body {
 }
 
 .room-tags li {
-  font-size: 0.75rem;
-  padding: 0.3rem 0.7rem;
-  border: 1px solid rgba(138,100,35,0.35);
-  border-radius: 999px;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.7rem;
+  border: 2px solid color-mix(in srgb, var(--accent, var(--panel-border)) 45%, var(--panel-border));
   color: var(--text-dim);
 }
 
@@ -683,19 +523,33 @@ body {
   margin: 1.4rem auto 0;
   padding-left: 1.2rem;
   color: var(--text-dim);
-  line-height: 1.7;
+  line-height: 1.6;
+  font-size: 1.1rem;
 }
 
 .room-link {
   display: inline-block;
   margin-top: 1.8rem;
-  color: var(--wall-light);
-  background: var(--gold-deep);
+  color: var(--stone-dark);
+  background: var(--accent, var(--torch));
   text-decoration: none;
-  padding: 0.6rem 1.4rem;
-  border-radius: 2px;
-  font-size: 0.9rem;
-  letter-spacing: 0.03em;
+  padding: 0.5rem 1.4rem;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: radial-gradient(circle at center, transparent 0%, rgba(10,8,6,0) 40%, #0a0806 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+}
+
+.vignette--active {
+  opacity: 1;
 }
 
 .site-footer {
@@ -703,7 +557,7 @@ body {
   z-index: 2;
   text-align: center;
   padding: 1rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: var(--text-dim);
   opacity: 0.8;
 }
@@ -711,26 +565,13 @@ body {
 .site-footer a { color: var(--text-dim); }
 
 @media (max-width: 640px) {
-  :root { --frame-w: 300px; --frame-h: 190px; }
-  .frame-outer { padding: 14px; }
-  .frame-dentil { padding: 5px 4px; }
-  .frame-bead { padding: 4px; }
-  .frame-mat { padding: 16px; }
-  .frame--selected { transform: translate(-50%, -50%) scale(6) !important; }
-  .nav-arrow { width: 34px; font-size: 1.3rem; }
-  .observatory { height: 115px; }
-  .bench { bottom: 34px; }
-  .visitor { bottom: 32px; width: 50px; height: 69px; }
+  .dungeon-frame { aspect-ratio: 4 / 5; }
+  .portal { width: clamp(48px, 14vw, 72px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .frame, .room, .vignette, .visitor { transition-duration: 0.2s !important; }
-  .frame--selected { transform: translate(-50%, -50%) scale(1.05) !important; }
-  .visitor--walking .char-body,
-  .visitor--walking .char-leg--l,
-  .visitor--walking .char-leg--r,
-  .visitor--walking .char-arm--l,
-  .visitor--walking .char-arm--r {
-    animation: none !important;
-  }
+  .room, .vignette, .dungeon-frame { transition-duration: 0.2s !important; }
+  .dungeon--transitioning .dungeon-frame { transform: none; filter: none; }
+  .portal { animation: none !important; }
+  .player--walking .player-sprite { animation: none !important; }
 }
