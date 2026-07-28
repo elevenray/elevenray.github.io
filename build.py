@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Static site generator for the museum-portfolio site.
+Static site generator for the pixel-dungeon portfolio site.
 
 Reads content from content/frames.py, renders templates/index.html.j2 with
 Jinja2, and writes the finished static site (HTML/CSS/JS only — nothing

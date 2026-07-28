@@ -13,14 +13,13 @@ SITE = {
     "footer_note": "Built with Python + Jinja2. Hosted free on GitHub Pages.",
 }
 
-# Each entry becomes one picture frame in the gallery, and one "room" you're
-# pulled into when you click it. Order here is left-to-right as you browse.
+# Each entry becomes one portal in the dungeon, and one room you step into
+# when you enter it. Order here is left-to-right across the back wall.
+# build.py auto-assigns each portal's position and archway/color theme based
+# on this list's length and order — no per-frame layout fields needed here.
 #
-# `image`: path (relative to static/) to a landscape screenshot or logo,
-# e.g. "static/images/company-a.png". Frames are landscape (roughly 8:5) —
-# a wide browser screenshot or a centered logo on a plain background both
-# work well. Leave "" to fall back to a plain gold-lit placeholder with the
-# company name.
+# `image` is currently unused (a leftover from an earlier design) — safe to
+# ignore or remove.
 FRAMES = [
     {
         "id": "frame-1",

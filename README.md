@@ -1,31 +1,25 @@
-# museum-portfolio
+# pixel-dungeon-portfolio
 
-An interactive portfolio site: one large landscape frame centered on screen
-at a time — move your mouse left/right to browse to the next one, click to
-get pulled inside and see the project/company behind it. A museum bench with
-a small silhouette sits below, tracking which piece you're in front of.
+An interactive portfolio site: a top-down pixel-art dungeon with 5 glowing
+portals set into the back wall, each opening into a themed room for one
+project. You control a samurai sprite with WASD/arrow keys (or drag-to-move
+on touch) — walk up to a portal, or just click/tap/hover it, to step inside.
 
 - **Content** lives in Python (`content/frames.py`) — no HTML editing needed
   to add/edit a project.
 - **Build**: `build.py` uses Jinja2 to render everything into a static
   `dist/` folder (plain HTML/CSS/JS — this is what actually runs in the
-  browser).
+  browser). It also auto-arranges however many portals you have across the
+  back wall and assigns each one a themed archway/color.
 - **Hosting**: free, via GitHub Pages at `elevenray.github.io`.
 
 ## Edit your content
 
 Open [content/frames.py](content/frames.py) and edit the `SITE` dict and the
-`FRAMES` list — one entry per frame/room (company, role, description, tags,
-achievements, link). Add or remove entries freely; the gallery and rooms are
-generated from this list automatically.
-
-### Adding screenshots/logos
-
-Each frame has an `"image"` field. Drop a landscape screenshot or logo into
-`static/images/` and point to it, e.g. `"image": "static/images/acme.png"`.
-Frames are landscape (roughly 8:5) — a wide browser screenshot or a logo
-centered on a plain background both work well. Leave `"image": ""` to fall
-back to a plain gold-lit placeholder with the company name.
+`FRAMES` list — one entry per portal/room (company, role, description, tags,
+achievements, link). Add or remove entries freely; portal placement and
+theming are computed automatically in `build.py` from however many entries
+you have.
 
 ## Preview locally
 
@@ -61,19 +55,24 @@ After that first setup, updating the site is just: edit
 
 ## How it works
 
-Pure CSS + vanilla JS (`static/js/gallery.js`, `static/css/style.css`), no
+Pure CSS + vanilla JS (`static/js/dungeon.js`, `static/css/style.css`), no
 frameworks:
 
-- **Browsing**: moving the mouse across the gallery divides it into one zone
-  per frame; only the frame under the cursor is shown (others are fully
-  hidden, not peeking) with a soft crossfade between them. Arrow buttons,
-  the left/right arrow keys, and touch swipe all work too.
-- **Stepping inside**: clicking a frame scales it up dramatically while a
-  vignette closes in, then the matching "room" section fades in underneath.
-  "Back to gallery" (or Escape) reverses it.
-- **The bench**: stationary at the bottom, with a small silhouette that
-  walks to line up with whichever frame is active. If you stay on one frame
-  for more than 3 seconds, it sits down; moving to another frame stands it
-  back up.
+- **Moving around**: held WASD/arrow keys move the sprite freely in 8
+  directions, with a matching walk-cycle animation and facing per direction.
+  On touch, dragging the floor walks toward your finger instead.
+- **Portals**: each one lights up and its name/role appears under the site
+  title whenever the sprite walks close, or you hover/click/tap/focus it
+  directly — no in-scene labels cluttering the room. Pressing Enter (or
+  clicking/tapping) while near one steps through it.
+- **Rooms**: stepping through a portal zooms/vignettes into a full project
+  page, background-themed to match that portal's own color. "Back" (or
+  Escape) returns you to the same spot in the dungeon.
+- **The floor**: rendered as a separate tilted 3D plane (CSS `perspective` +
+  `rotateX`) behind the portals/player/props, which stay flat and upright —
+  the same "flat sprites over a 3D backdrop" trick HD-2D games use.
+- **The art**: the floor/wall tileset, all 5 portal archways, the torches,
+  the loot props, and the player's 8-direction walk cycle were generated
+  with PixelLab and live under `static/images/`.
 
 `prefers-reduced-motion` is respected throughout for accessibility.
