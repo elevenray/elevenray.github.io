@@ -194,10 +194,14 @@
     if (key === 'arrowup' || key === 'w') { heldKeys.up = true; e.preventDefault(); }
     if (key === 'arrowdown' || key === 's') { heldKeys.down = true; e.preventDefault(); }
 
-    if ((key === 'enter' || key === ' ') && nearPortal && !activeRoom &&
-        document.activeElement && !document.activeElement.classList.contains('portal')) {
-      e.preventDefault();
-      openRoom(nearPortal);
+    if (key === 'enter' || key === ' ') {
+      if (activeRoom) {
+        e.preventDefault();
+        closeRoom();
+      } else if (nearPortal && document.activeElement && !document.activeElement.classList.contains('portal')) {
+        e.preventDefault();
+        openRoom(nearPortal);
+      }
     }
   });
 
