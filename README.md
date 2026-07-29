@@ -32,9 +32,7 @@ file keeps them in sync.
   (the dungeon experience), and a shared `dist/static/`. It also
   auto-arranges however many portals you have across the back wall and
   assigns each one a themed archway/color.
-- **Hosting**: free, via GitHub Pages at `elevenray.github.io`. This
-  source repo is private; a small separate public repo holds only the
-  built output for Pages to serve — see "Deploy" below.
+- **Hosting**: free, via GitHub Pages at `elevenray.github.io`.
 - **License**: all rights reserved — see [LICENSE](LICENSE). The site is
   public so it can be visited, not so its code can be reused.
 
@@ -60,50 +58,34 @@ python -m http.server -d dist 8000
 
 Then open http://localhost:8000 in a browser.
 
-## Deploy to GitHub Pages (private source, public deploy repo)
+## Deploy to GitHub Pages (free)
 
-GitHub Pages on the Free plan can only publish from a **public** repo —
-so a single-repo setup means the source (`build.py`, templates, commit
-history) is necessarily public too. This project instead splits that in
-two: **this repo stays private** and holds all the source; a second,
-separate **public** repo named `elevenray.github.io` holds nothing but the
-already-built `dist/` output, and that's what Pages actually serves. The
-[LICENSE](LICENSE) covers the (unavoidably public) rendered site itself.
+> **The repo must stay public.** On GitHub Free, Pages can only publish
+> from a public repository — making it private silently unpublishes the
+> live site (it starts 404ing) until it's flipped back or the account
+> upgrades to a paid plan that supports Pages from private repos. The
+> [LICENSE](LICENSE) is what actually protects the code here, not repo
+> visibility.
 
-### One-time setup
-
-1. **This repo**: rename it away from `elevenray.github.io` (Settings →
-   General → Repository name — any name works, e.g. `elevenray-portfolio`)
-   and make sure it's **private**.
-2. **Create a new, separate public repo** named exactly
-   `elevenray.github.io` — empty, no files needed. This is the one Pages
-   will serve from.
-3. In that new public repo, go to **Settings → Deploy keys → Add deploy
-   key**, check **"Allow write access"**, and paste in this public key
-   (already generated, its private half lives at
-   `~/.ssh/elevenray_pages_deploy_key` — never commit that file):
-   ```
-   ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHCBdhJMGnH4LU8NbiI7WM+/7tKXy2kEAWdSnxC6Swbc elevenray-portfolio-pages-deploy
-   ```
-4. Back in **this** (renamed, private) repo, go to **Settings → Secrets
-   and variables → Actions → New repository secret**, name it
-   `PAGES_DEPLOY_KEY`, and paste in the *private* key. Get its contents by
-   running this yourself in a terminal (not shown here on purpose):
+1. Create a new **public** repo on GitHub named exactly `elevenray.github.io`.
+2. Push this project to it:
    ```bash
-   cat ~/.ssh/elevenray_pages_deploy_key
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/elevenray/elevenray.github.io.git
+   git push -u origin main
    ```
-5. In the new public `elevenray.github.io` repo, go to **Settings → Pages**
-   and set **Source** to **"Deploy from a branch"** → `main` → `/ (root)`.
-6. Push to `main` on this (source) repo, or run the "Build and deploy
-   site" workflow manually from the Actions tab. The workflow
-   (`.github/workflows/deploy.yml`) runs `build.py`, then pushes the
-   resulting `dist/` contents to the public repo's `main` branch.
-7. Your site will be live at **https://elevenray.github.io** within a
-   minute or two.
+3. In the repo, go to **Settings → Pages** and set **Source** to
+   **GitHub Actions** (one-time setup).
+4. The included workflow (`.github/workflows/deploy.yml`) runs `build.py`
+   and publishes `dist/` automatically on every push to `main`.
+5. Your site will be live at **https://elevenray.github.io** within a
+   minute or two of the push.
 
 After that first setup, updating the site is just: edit
-`content/frames.py` → commit → push to this repo. No need to run the
-build or touch the public repo yourself.
+`content/frames.py` → commit → push. No need to run the build yourself.
 
 ## How it works
 
