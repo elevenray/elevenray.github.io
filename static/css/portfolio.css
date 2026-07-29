@@ -102,10 +102,39 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 }
 
 .nav-wordmark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
   font-family: 'Archivo Black', sans-serif;
   text-transform: uppercase;
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   letter-spacing: -0.01em;
+}
+
+/* Keep the two name spans above the mark, which sits behind them
+   (absolutely positioned, see .nav-mark) rather than in the text flow. */
+.nav-wordmark > span {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-mark {
+  /* Absolutely positioned and centered on the wordmark as a whole, so it
+     lands right around the gap between the two names (behind the D/L
+     boundary) without needing to know each word's exact rendered width.
+     Sized in em relative to the wordmark's own font-size so it scales with
+     the text. */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 5.0625em;
+  width: auto;
+  color: var(--ink);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .nav-links {
@@ -165,7 +194,17 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 }
 
 @media (max-width: 640px) {
-  .nav-toggle { display: inline-flex; }
+  /* Center the wordmark (and its SVG mark) in the bar; the toggle button
+     comes out of flow so it doesn't fight the centering. */
+  .nav { justify-content: center; }
+
+  .nav-toggle {
+    display: inline-flex;
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 
   /* The plain top-right pill is a poor fit on narrow screens (it can
      collide with the sticky nav); mobile gets the dropdown item instead. */
