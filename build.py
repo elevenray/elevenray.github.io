@@ -96,7 +96,11 @@ def build():
     # a "../" prefix back up to the shared dist/static/ folder.
     dungeon_template = env.get_template("dungeon.html.j2")
     dungeon_html = dungeon_template.render(
-        site=SITE, frames=layout_portals(FRAMES), asset_version=asset_version, static_prefix="../"
+        site=SITE,
+        frames=layout_portals(FRAMES),
+        asset_version=asset_version,
+        static_prefix="../",
+        year=date.today().year,
     )
     (dungeon_dir / "index.html").write_text(dungeon_html, encoding="utf-8")
 
