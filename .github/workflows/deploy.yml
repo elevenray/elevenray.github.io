@@ -5,17 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,16 +19,15 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python build.py
-      - uses: actions/upload-pages-artifact@v3
+      # This repo (the source) stays private. dist/ — the built,
+      # already-public-once-served site — gets pushed to a separate public
+      # repo (named elevenray.github.io) whose only job is to be a GitHub
+      # Pages target. See README.md for the one-time setup this depends on.
+      - uses: peaceiris/actions-gh-pages@v3
         with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          deploy_key: ${{ secrets.PAGES_DEPLOY_KEY }}
+          external_repository: elevenray/elevenray.github.io
+          publish_branch: main
+          publish_dir: ./dist
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
