@@ -9,11 +9,35 @@
   var interactHint = document.getElementById('interact-hint');
   var touchInteractBtn = document.getElementById('touch-interact');
   var portalName = document.getElementById('portal-name');
+  var chestToast = document.getElementById('chest-toast');
+  var chestToastText = document.getElementById('chest-toast-text');
+  var floorMessage = document.getElementById('floor-message');
+  var floorMessageText = document.getElementById('floor-message-text');
+  var bigSign = document.getElementById('big-sign');
+  var bigSignText = document.getElementById('big-sign-text');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var SPEED_PX_S = 150;
   var NEAR_PX = 68;
   var ROOM_OPEN_DELAY = reduceMotion ? 200 : 750;
+
+  // Easter eggs: standing right on a prop (a much tighter radius than the
+  // portals' "near" check) for a few uninterrupted seconds pops its message.
+  // Each entry tracks its own dwell timer/triggered state independently.
+  var EGG_DWELL_PX = 36;
+  var EGG_DWELL_MS = 3000;
+  var EGG_VISIBLE_MS = 4000;
+  var toastHideTimer = null;
+  var floorMessageHideTimer = null;
+  var bigSignHideTimer = null;
+
+  var EASTER_EGGS = [
+    { el: document.getElementById('easter-chest'), display: 'toast', message: 'Pantry app coming soon', dwellStart: null, triggered: false },
+    { el: document.getElementById('easter-gold'), display: 'floor', message: 'Now you really owe me an interview', dwellStart: null, triggered: false },
+    { el: document.getElementById('easter-barrel'), display: 'floor', message: 'Now you really owe me an interview', dwellStart: null, triggered: false },
+    { el: document.getElementById('easter-katana'), display: 'floor', message: "Hey, watch out — it's sharp!", dwellStart: null, triggered: false },
+    { el: document.getElementById('easter-kabuto'), display: 'big', message: 'Welcome', dwellStart: null, triggered: false }
+  ];
 
   // Pixel-art sprite: a 6-frame walk cycle per one of 8 compass facings,
   // plus a single standing frame shown whenever the player isn't moving.
@@ -148,6 +172,56 @@
     }
   }
 
+  function showEggMessage(egg) {
+    if (egg.display === 'toast') {
+      chestToastText.textContent = egg.message;
+      chestToast.classList.add('is-visible');
+      clearTimeout(toastHideTimer);
+      toastHideTimer = window.setTimeout(function () { chestToast.classList.remove('is-visible'); }, EGG_VISIBLE_MS);
+    } else if (egg.display === 'floor') {
+      floorMessageText.textContent = egg.message;
+      floorMessage.classList.add('is-visible');
+      clearTimeout(floorMessageHideTimer);
+      floorMessageHideTimer = window.setTimeout(function () { floorMessage.classList.remove('is-visible'); }, EGG_VISIBLE_MS);
+    } else if (egg.display === 'big') {
+      bigSignText.textContent = egg.message;
+      // Restart the entrance animation even if it's already visible/mid-animation.
+      bigSign.classList.remove('is-visible');
+      void bigSign.offsetWidth;
+      bigSign.classList.add('is-visible');
+      clearTimeout(bigSignHideTimer);
+      bigSignHideTimer = window.setTimeout(function () { bigSign.classList.remove('is-visible'); }, EGG_VISIBLE_MS);
+    }
+  }
+
+  function resetEgg(egg) {
+    egg.dwellStart = null;
+    egg.triggered = false;
+    if (egg.el) egg.el.classList.remove('is-triggering');
+  }
+
+  function updateEasterEggs() {
+    if (activeRoom) { EASTER_EGGS.forEach(resetEgg); return; }
+    var rect = floor.getBoundingClientRect();
+    var px = { x: rect.width * pos.x / 100, y: rect.height * pos.y / 100 };
+
+    EASTER_EGGS.forEach(function (egg) {
+      if (!egg.el) return;
+      var er = egg.el.getBoundingClientRect();
+      var ex = { x: er.left + er.width / 2 - rect.left, y: er.bottom - rect.top };
+      var onIt = Math.hypot(px.x - ex.x, px.y - ex.y) < EGG_DWELL_PX;
+
+      egg.el.classList.toggle('is-triggering', onIt && !egg.triggered);
+
+      if (!onIt) { resetEgg(egg); return; }
+      if (egg.dwellStart === null) egg.dwellStart = performance.now();
+      if (!egg.triggered && performance.now() - egg.dwellStart >= EGG_DWELL_MS) {
+        egg.triggered = true;
+        showEggMessage(egg);
+      }
+    });
+  }
+
   function openRoom(portalEl) {
     if (activeRoom) return;
     var room = document.getElementById(portalEl.dataset.target);
@@ -255,6 +329,7 @@
     last = now;
     updateMovement(dt);
     updateProximity();
+    updateEasterEggs();
     window.requestAnimationFrame(tick);
   }
   window.requestAnimationFrame(tick);

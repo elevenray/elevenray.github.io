@@ -32,11 +32,15 @@
       <div class="wall-torch" style="left: 60%;" aria-hidden="true"></div>
       <div class="wall-torch" style="left: 80%;" aria-hidden="true"></div>
 
-      <div class="cave-prop cave-prop--katana" aria-hidden="true"></div>
-      <div class="cave-prop cave-prop--kabuto" aria-hidden="true"></div>
-      <div class="cave-prop cave-prop--chest" aria-hidden="true"></div>
-      <div class="cave-prop cave-prop--gold" aria-hidden="true"></div>
-      <div class="cave-prop cave-prop--barrel" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--katana" id="easter-katana" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--kabuto" id="easter-kabuto" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--chest" id="easter-chest" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--gold" id="easter-gold" aria-hidden="true"></div>
+      <div class="cave-prop cave-prop--barrel" id="easter-barrel" aria-hidden="true"></div>
+
+      <div class="floor-message" id="floor-message" aria-live="polite">
+        <span class="floor-message-text" id="floor-message-text"></span>
+      </div>
 
       {% for frame in frames %}
       <button
@@ -97,6 +101,15 @@
 {% endfor %}
 
 <div class="vignette" id="vignette" aria-hidden="true"></div>
+
+<div class="toast" id="chest-toast" role="status" aria-live="polite">
+  <span class="toast-icon" aria-hidden="true">&#10024;</span>
+  <span class="toast-text" id="chest-toast-text">Pantry app coming soon</span>
+</div>
+
+<div class="big-sign" id="big-sign" role="status" aria-live="polite">
+  <span class="big-sign-text" id="big-sign-text"></span>
+</div>
 
 <footer class="site-footer">
   <p>{{ site.footer_note }} &middot; <a href="mailto:{{ site.email }}">{{ site.email }}</a> &middot; <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a></p>
