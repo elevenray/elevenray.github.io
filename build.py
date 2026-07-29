@@ -104,6 +104,12 @@ def build():
     )
     (dungeon_dir / "index.html").write_text(dungeon_html, encoding="utf-8")
 
+    # GitHub Pages runs all content through Jekyll by default — even for
+    # Actions-based deploys — and Jekyll's own routing/exclude rules can
+    # silently drop nested paths like dungeon/index.html. This opts out of
+    # that processing entirely so Pages serves dist/ as plain static files.
+    (DIST_DIR / ".nojekyll").touch()
+
     print(f"Built site into {DIST_DIR}")
 
 
