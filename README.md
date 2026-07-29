@@ -1,16 +1,29 @@
 # pixel-dungeon-portfolio
 
-An interactive portfolio site: a top-down pixel-art dungeon with 5 glowing
-portals set into the back wall, each opening into a themed room for one
-project. You control a samurai sprite with WASD/arrow keys (or drag-to-move
-on touch) — walk up to a portal, or just click/tap/hover it, to step inside.
+A two-page portfolio site:
+
+- **Home** (`/`) is a modern, professional portfolio page — hero intro,
+  skills, an experience timeline, and education/certifications. Five
+  seconds after it loads, a "Learn more about me →" button fades in at the
+  top right and links to the dungeon.
+- **`/dungeon/`** is the original interactive experience: a top-down
+  pixel-art dungeon with 5 glowing portals set into the back wall, each
+  opening into a themed room for one project. You control a samurai sprite
+  with WASD/arrow keys (or drag-to-move on touch) — walk up to a portal, or
+  just click/tap/hover it, to step inside.
+
+Both pages are generated from the same underlying content, so editing one
+file keeps them in sync.
 
 - **Content** lives in Python (`content/frames.py`) — no HTML editing needed
-  to add/edit a project.
+  to add/edit a project. `content/portfolio.py` derives the modern portfolio
+  page's content from `frames.py` automatically.
 - **Build**: `build.py` uses Jinja2 to render everything into a static
   `dist/` folder (plain HTML/CSS/JS — this is what actually runs in the
-  browser). It also auto-arranges however many portals you have across the
-  back wall and assigns each one a themed archway/color.
+  browser): `dist/index.html` (the portfolio home page), `dist/dungeon/`
+  (the dungeon experience), and a shared `dist/static/`. It also
+  auto-arranges however many portals you have across the back wall and
+  assigns each one a themed archway/color.
 - **Hosting**: free, via GitHub Pages at `elevenray.github.io`.
 
 ## Edit your content
@@ -19,7 +32,10 @@ Open [content/frames.py](content/frames.py) and edit the `SITE` dict and the
 `FRAMES` list — one entry per portal/room (company, role, description, tags,
 achievements, link). Add or remove entries freely; portal placement and
 theming are computed automatically in `build.py` from however many entries
-you have.
+you have. The modern portfolio page (`content/portfolio.py`) pulls its
+skills, experience, and education straight from this same list — the last
+entry in `FRAMES` ("About Me") supplies the skills/education, and every
+other entry becomes one experience timeline item.
 
 ## Preview locally
 

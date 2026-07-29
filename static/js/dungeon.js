@@ -41,7 +41,7 @@
 
   // Pixel-art sprite: a 6-frame walk cycle per one of 8 compass facings,
   // plus a single standing frame shown whenever the player isn't moving.
-  var SPRITE_BASE = 'static/images/visitor/';
+  var SPRITE_BASE = (window.STATIC_BASE || '') + 'static/images/visitor/';
   var DIRECTIONS = ['east', 'south-east', 'south', 'south-west', 'west', 'north-west', 'north', 'north-east'];
   var WALK_FRAME_MS = 120;
   var WALK_FRAMES = {};

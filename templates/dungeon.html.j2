@@ -8,9 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/css/style.css?v={{ asset_version.css }}">
+<link rel="stylesheet" href="{{ static_prefix }}static/css/style.css?v={{ asset_version.css }}">
 </head>
 <body>
+
+<a class="back-to-portfolio" href="../">&larr; Back to the boring portfolio</a>
 
 <header class="intro">
   <h1>{{ site.name }}</h1>
@@ -52,12 +54,12 @@
         style="--accent: {{ frame.portal_color }}; left: {{ frame.portal_x }}%; top: {{ frame.portal_y }}%;"
         aria-label="Enter {{ frame.company }}"
       >
-        <span class="portal-arch" style="background-image: url('{{ frame.archway }}');"></span>
+        <span class="portal-arch" style="background-image: url('{{ static_prefix }}{{ frame.archway }}');"></span>
       </button>
       {% endfor %}
 
       <div class="player" id="player">
-        <img class="player-sprite" id="player-sprite" src="static/images/visitor/south-static.png" alt="">
+        <img class="player-sprite" id="player-sprite" src="{{ static_prefix }}static/images/visitor/south-static.png" alt="">
       </div>
 
       <div class="interact-hint" id="interact-hint" aria-hidden="true">
@@ -76,7 +78,7 @@
   <button class="room-back" aria-label="Back to the dungeon">&larr; Back</button>
   <div class="room-content">
     {% if frame.image %}
-    <img class="room-avatar" src="{{ frame.image }}" alt="{{ frame.company }}">
+    <img class="room-avatar" src="{{ static_prefix }}{{ frame.image }}" alt="{{ frame.company }}">
     {% endif %}
     <p class="room-period">{{ frame.period }}</p>
     <h2>{{ frame.company }}</h2>
@@ -115,6 +117,7 @@
   <p>{{ site.footer_note }} &middot; <a href="mailto:{{ site.email }}">{{ site.email }}</a> &middot; <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a></p>
 </footer>
 
-<script src="static/js/dungeon.js?v={{ asset_version.js }}"></script>
+<script>window.STATIC_BASE = "{{ static_prefix }}";</script>
+<script src="{{ static_prefix }}static/js/dungeon.js?v={{ asset_version.js }}"></script>
 </body>
 </html>

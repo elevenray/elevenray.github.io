@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ profile.name }} — {{ profile.title }}</title>
+<meta name="description" content="{{ profile.summary }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/portfolio.css?v={{ asset_version.portfolio_css }}">
+</head>
+<body>
+
+<a class="more-btn" id="more-btn" href="dungeon/" aria-hidden="true" tabindex="-1">
+  Dungeon <span class="more-btn-arrow" aria-hidden="true">&rarr;&rarr;</span>
+</a>
+
+<nav class="nav">
+  <span class="nav-wordmark">{{ profile.name }}</span>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li class="nav-dungeon-item" id="nav-dungeon-item">
+      <a href="dungeon/" id="nav-dungeon-link" aria-hidden="true" tabindex="-1">Dungeon <span aria-hidden="true">&rarr;&rarr;</span></a>
+    </li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <p class="hero-eyebrow">Featured experience <span class="hero-eyebrow-arrow">&darr;</span></p>
+  <h1 class="hero-stack">
+    {% for area in profile.focus_areas %}<span>{{ area }}</span>{% endfor %}
+  </h1>
+  <div class="hero-bottom">
+    <div class="hero-intro">
+      <p class="hero-title">{{ profile.title }}</p>
+      <p class="hero-location">{{ profile.location }}</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="mailto:{{ profile.email }}">Email me</a>
+        <a class="btn btn--ghost" href="https://github.com/{{ profile.github_username }}" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn--ghost" href="https://{{ profile.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <img class="hero-photo" src="{{ profile.photo }}" alt="{{ profile.name }}">
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {% for company in profile.companies %}<span>{{ company }}</span><span class="marquee-dot">&bull;</span>{% endfor %}
+    {% for company in profile.companies %}<span>{{ company }}</span><span class="marquee-dot">&bull;</span>{% endfor %}
+  </div>
+</div>
+
+<main>
+  <section class="section" id="experience">
+    <h2 class="section-label">Experience</h2>
+    <ol class="cases">
+      {% for job in profile.experience %}
+      <li class="case">
+        <p class="case-index">{{ "%02d"|format(loop.index) }}</p>
+        <h3 class="case-name">{{ job.company }}</h3>
+        <div class="case-body">
+          <dl class="case-meta">
+            <div><dt>Year</dt><dd>{{ job.period }}</dd></div>
+            <div><dt>Role</dt><dd>{{ job.role }}</dd></div>
+            <div><dt>Focus</dt><dd>{{ job.tags|join(", ") }}</dd></div>
+          </dl>
+          <div class="case-content">
+            <p class="case-summary">{{ job.summary }}</p>
+            {% if job.achievements %}
+            <ul class="case-achievements">
+              {% for a in job.achievements %}<li>{{ a }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <section class="section" id="skills">
+    <h2 class="section-label">Skills</h2>
+    {% for group in profile.skill_groups %}
+    <div class="skill-group">
+      <h3 class="skill-group-label">{{ group.label }}</h3>
+      <ul class="skill-pills">
+        {% for skill in group.tags %}<li class="skill-pill skill-pill--{{ loop.index0 % 3 }}">{{ skill }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="section" id="education">
+    <h2 class="section-label">Education &amp; Certifications</h2>
+    <ul class="ed-list">
+      {% for item in profile.education %}
+      <li class="ed-row">
+        <span class="ed-marker">{{ "%02d"|format(loop.index) }}</span>
+        <span class="ed-text">{{ item }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer" id="contact">
+  <p class="footer-label">Get in touch</p>
+  <a class="footer-email" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+  <div class="footer-links">
+    <a href="https://github.com/{{ profile.github_username }}" target="_blank" rel="noopener">GitHub &rarr;</a>
+    <a href="https://{{ profile.linkedin }}" target="_blank" rel="noopener">LinkedIn &rarr;</a>
+  </div>
+  <p class="footer-note">&copy; {{ year }} {{ profile.name }} &middot; {{ profile.footer_note }}</p>
+</footer>
+
+<script src="static/js/portfolio.js?v={{ asset_version.portfolio_js }}"></script>
+</body>
+</html>

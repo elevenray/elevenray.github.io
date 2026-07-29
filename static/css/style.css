@@ -38,13 +38,55 @@ body {
     linear-gradient(180deg, var(--stone) 0%, var(--stone-dark) 70%);
 }
 
+/* --- Back-to-portfolio button --- */
+
+.back-to-portfolio {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  background: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  color: var(--parchment);
+  font-family: 'VT323', monospace;
+  font-size: 1.05rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.back-to-portfolio:hover {
+  border-color: var(--torch);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-portfolio { transition: none; }
+  .back-to-portfolio:hover { transform: none; }
+}
+
+@media (max-width: 640px) {
+  .back-to-portfolio {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.95rem;
+  }
+}
+
 /* --- Header --- */
 
 .intro {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 2rem 1.5rem 0.5rem;
+  /* Extra top padding clears the fixed .back-to-portfolio button so it
+     never overlaps the centered title. */
+  padding: 4.75rem 1.5rem 0.5rem;
 }
 
 .intro h1 {
@@ -760,6 +802,7 @@ body {
 @media (max-width: 640px) {
   .dungeon-frame { aspect-ratio: 4 / 5; }
   .portal { width: clamp(48px, 14vw, 72px); }
+  .intro { padding-top: 4rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

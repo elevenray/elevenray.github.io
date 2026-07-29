@@ -12,11 +12,13 @@ Usage:
 """
 import hashlib
 import shutil
+from datetime import date
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
 from content.frames import SITE, FRAMES
+from content.portfolio import PROFILE
 
 ROOT = Path(__file__).parent
 TEMPLATES_DIR = ROOT / "templates"
@@ -66,6 +68,8 @@ def build():
     if DIST_DIR.exists():
         shutil.rmtree(DIST_DIR)
     DIST_DIR.mkdir(parents=True)
+    dungeon_dir = DIST_DIR / "dungeon"
+    dungeon_dir.mkdir(parents=True)
 
     shutil.copytree(STATIC_DIR, DIST_DIR / "static")
 
@@ -74,12 +78,27 @@ def build():
     asset_version = {
         "css": file_hash(STATIC_DIR / "css" / "style.css"),
         "js": file_hash(STATIC_DIR / "js" / "dungeon.js"),
+        "portfolio_css": file_hash(STATIC_DIR / "css" / "portfolio.css"),
+        "portfolio_js": file_hash(STATIC_DIR / "js" / "portfolio.js"),
     }
 
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)))
-    template = env.get_template("index.html.j2")
-    html = template.render(site=SITE, frames=layout_portals(FRAMES), asset_version=asset_version)
-    (DIST_DIR / "index.html").write_text(html, encoding="utf-8")
+
+    # Home page: modern professional portfolio.
+    portfolio_template = env.get_template("portfolio.html.j2")
+    portfolio_html = portfolio_template.render(
+        profile=PROFILE, asset_version=asset_version, year=date.today().year
+    )
+    (DIST_DIR / "index.html").write_text(portfolio_html, encoding="utf-8")
+
+    # /dungeon/: the interactive pixel-dungeon experience, one level deeper
+    # now that the portfolio owns the site root, so its own asset paths need
+    # a "../" prefix back up to the shared dist/static/ folder.
+    dungeon_template = env.get_template("dungeon.html.j2")
+    dungeon_html = dungeon_template.render(
+        site=SITE, frames=layout_portals(FRAMES), asset_version=asset_version, static_prefix="../"
+    )
+    (dungeon_dir / "index.html").write_text(dungeon_html, encoding="utf-8")
 
     print(f"Built site into {DIST_DIR}")
 
