@@ -492,11 +492,11 @@ body {
   align-items: flex-start;
   justify-content: center;
   padding: 5rem 1.5rem 3rem;
-  background-color: var(--stone-dark);
+  background-color: var(--stone-mid);
   background-image:
-    radial-gradient(ellipse 780px 460px at 50% -8%, color-mix(in srgb, var(--accent, var(--accent-fallback)) 50%, transparent) 0%, transparent 62%),
-    radial-gradient(ellipse 620px 380px at 50% 108%, color-mix(in srgb, var(--accent, var(--accent-fallback)) 28%, transparent) 0%, transparent 68%),
-    linear-gradient(180deg, rgba(8,6,4,0.88), rgba(8,6,4,0.88)),
+    radial-gradient(ellipse 780px 460px at 50% -8%, color-mix(in srgb, var(--accent, var(--accent-fallback)) 62%, transparent) 0%, transparent 62%),
+    radial-gradient(ellipse 620px 380px at 50% 108%, color-mix(in srgb, var(--accent, var(--accent-fallback)) 38%, transparent) 0%, transparent 68%),
+    linear-gradient(180deg, rgba(60,47,33,0.55), rgba(60,47,33,0.55)),
     url('../images/cave/wall-tile.png');
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
   background-size: auto, auto, auto, 88px 88px;
@@ -536,7 +536,15 @@ body {
 .room-content {
   position: relative;
   max-width: 640px;
+  width: 100%;
   text-align: center;
+  padding: 2rem 2rem 2.5rem;
+  background: var(--stone-light);
+  border: 2px solid var(--accent, var(--accent-fallback));
+  /* The lightened panel background needs brighter "dim" text than the rest
+     of the (much darker) site to keep secondary copy readable — scoped
+     here so nothing outside the room pages is affected. */
+  --text-dim: #d9c8a1;
 }
 
 .room-avatar {

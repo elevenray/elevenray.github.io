@@ -24,25 +24,25 @@ FRAMES = [
     {
         "id": "frame-1",
         "image": "",
-        "company": "Perficient — Innocean / Hyundai / LPL Financial",
-        "role": "QA Lead Engineer & Senior Technical Consultant",
-        "period": "May 2024 – Present",
-        "summary": "Leading AI-augmented QA automation across distributed teams and multiple enterprise clients.",
+        "company": "Perficient — LPL Financial",
+        "role": "Senior Quality Engineer & Senior Technical Consultant",
+        "period": "Oct 2025 – Present",
+        "summary": "Keeping 42+ releases on schedule across five concurrent release types by leading a distributed QA team and AI-driven workflows.",
         "description": (
-            "Lead and mentor an offshore QA team, weaving AI agent-assisted "
-            "workflows into daily test operations to keep sprint timelines "
-            "and quality standards aligned across distributed contributors. "
-            "Design comprehensive UAT scripts and define QA strategies for "
-            "AI-driven projects, tackling challenges like data variability "
-            "and model validation."
+            "Lead and mentor a distributed offshore QA team, embedding AI "
+            "agent-assisted workflows into daily operations. Migrated the "
+            "team from Blackbird/Selenium to Starling/Playwright (Java) and "
+            "built out AI harness engineering — orchestrating Cursor AI "
+            "agents and custom skills across parallel test-development "
+            "tracks."
         ),
-        "tags": ["Cursor AI", "Playwright", "Java", "GenCase", "Zephyr", "Agentic Workflows"],
+        "tags": ["Cursor AI", "Playwright", "Java", "Zephyr", "GenCase", "AI Harness Engineering"],
         "achievements": [
-            "Improved offshore QA team consistency and sprint alignment, as measured by on-time delivery across distributed teams, by mentoring the team and embedding AI agent-assisted workflows into daily operations.",
-            "Accelerated UAT script creation, as measured by faster authoring turnaround, by designing and delivering scripts with AI-assisted authoring tools.",
-            "Sped up test script generation, as measured by reduced automation development time, by developing story-level automation with Starling/Playwright (Java) using Cursor AI.",
-            "Streamlined test case creation and execution, as measured by improved traceability across test cycles, by orchestrating testing through Zephyr and GenCase, an AI-driven test management tool.",
-            "Strengthened QA strategy for AI-driven projects, as measured by reduced defect leakage from data variability and edge cases, by defining targeted validation strategies.",
+            "Kept 42 releases on schedule since October 2025 across five concurrent release types (Primary, RAD, Support, Express, Emergency) — including a monthly Primary release with 500+ changes — by leading and mentoring a distributed offshore QA team and embedding AI agent-assisted workflows into daily operations.",
+            "Increased automation script development speed by ~80% across story-level test suites by migrating the team from Blackbird/Selenium to Starling/Playwright (Java) and developing AI harness engineering — orchestrating Cursor AI agents and custom skills across parallel test-development tracks.",
+            "Improved test case traceability and execution efficiency by ~90% across parallel test tracks by orchestrating work in Zephyr and GenCase, an AI-driven test management platform.",
+            "Strengthened defect visibility and resolution speed by partnering closely with product managers, developers, and business stakeholders across the sprint cycle.",
+            "Built QA strategies tailored to AI-driven projects, addressing data variability, model validation, and edge-case handling.",
         ],
         "link": "",
         "link_label": "View project",
@@ -51,51 +51,53 @@ FRAMES = [
     {
         "id": "frame-2",
         "image": "",
-        "company": "Perficient — Ford",
-        "role": "Site Reliability Engineer & Senior Technical Consultant",
-        "period": "Jun 2021 – Present",
-        "summary": "Keeping deployment, monitoring, and log-analysis infrastructure reliable for a $48.5B automotive company.",
+        "company": "Perficient — Hyundai / Innocean",
+        "role": "QA Lead Engineer & Senior Technical Consultant",
+        "period": "May 2024 – Dec 2025",
+        "summary": "Led QA for HeyHyundai, the AI-powered chat assistant on Hyundai's website, from black-box testing through production.",
         "description": (
-            "Partner with Ford's clients and microservices teams in Irvine, "
-            "CA to optimize and maintain critical infrastructure, "
-            "implementing deployment pipelines across Adobe AEM "
-            "environments and building Splunk dashboards to monitor "
-            "security events and system performance."
+            "Led and mentored a QA team conducting black-box testing of "
+            "HeyHyundai, designing test strategies to validate model "
+            "behavior — including personalization, memory, and caching — "
+            "without visibility into the underlying implementation."
         ),
-        "tags": ["Jenkins", "Groovy", "Splunk", "Dynatrace", "Adobe AEM", "JIRA"],
+        "tags": ["Cypress", "AI-Assisted Authoring", "Black-Box Testing", "HeyHyundai"],
         "achievements": [
-            "Cut manual deployment effort by 90%, as measured by reduced deployment time per release, by automating code deployment with Jenkins and Groovy scripts.",
-            "Reduced error rates by 60%, as measured by fewer recurring incidents, by managing and configuring Splunk for proactive log analysis.",
-            "Improved visibility into security events, as measured by faster detection of authentication anomalies and access violations, by building dedicated Splunk dashboards.",
-            "Lowered downtime risk, as measured by earlier detection of performance bottlenecks, by monitoring system performance with Dynatrace.",
-            "Minimized the impact of system changes on availability, as measured by fewer change-related incidents, by conducting risk assessments via JIRA.",
-        ],
-        "link": "",
-        "link_label": "View project",
-        "accent": "#7f9c8c",
-    },
-    {
-        "id": "frame-3",
-        "image": "",
-        "company": "Optimus Learning",
-        "role": "Software Developer Intern",
-        "period": "Dec 2019 – Nov 2020",
-        "summary": "Built the company website from the ground up and tutored the next generation in code.",
-        "description": (
-            "Led development of Optimus Learning's website using HTML, "
-            "CSS, and JavaScript/PHP, then implemented SEO improvements "
-            "that grew traffic by 30%. Also taught middle schoolers Math "
-            "and Python."
-        ),
-        "tags": ["HTML", "CSS", "PHP", "JavaScript", "SEO"],
-        "achievements": [
-            "Delivered a polished, user-friendly company website, as measured by improved visitor engagement, by leading development in HTML, CSS, and JavaScript/PHP.",
-            "Grew website traffic by 30%, as measured by increased organic visits, by implementing SEO improvements.",
-            "Strengthened math and programming fundamentals for middle school students, as measured by improved classroom performance, by instructing Math and Python lessons.",
+            "Cut UAT script authoring time by ~80% (from ~2 hours to ~20 minutes per script) for client-side validation cycles by using AI-assisted authoring tools to generate scripts that fully verified business requirements before sign-off.",
+            "Led and mentored a QA team conducting black-box testing of HeyHyundai, the AI-powered chat assistant on Hyundai's website, designing test strategies to validate model behavior without visibility into underlying implementation.",
+            "Designed QA strategies to test HeyHyundai's personalization and memory behavior, addressing caching and data ID handling by generating fresh browser profiles to validate how the AI retained and recalled user data across sessions.",
+            "Built a Cypress automation script to validate the AI-driven dynamic personalization engine that reordered vehicle page components in real time to guide users closer to purchase — reducing manual testing effort by ~50%.",
+            "Supported 4 major production releases of HeyHyundai over the engagement by aligning QA strategy and defect resolution across cross-functional teams.",
         ],
         "link": "",
         "link_label": "View project",
         "accent": "#8c7fa0",
+    },
+    {
+        "id": "frame-3",
+        "image": "",
+        "company": "Perficient — Ford",
+        "role": "Site Reliability Engineer & Senior Technical Consultant",
+        "period": "Jun 2021 – May 2024",
+        "summary": "Kept deployment, monitoring, and log-analysis infrastructure reliable for a $48.5B automotive company.",
+        "description": (
+            "Maintained performance and reliability of critical "
+            "infrastructure, leading optimization efforts across "
+            "microservices teams and implementing standardized deployment "
+            "processes for Adobe AEM environments, plus the Splunk "
+            "dashboards used to monitor it."
+        ),
+        "tags": ["Jenkins", "Groovy", "Splunk", "Dynatrace", "Adobe AEM", "JIRA"],
+        "achievements": [
+            "Cut deployment time by ~90% by automating code deployment pipelines using Jenkins and Groovy scripts.",
+            "Reduced production error rates by 60% by spearheading Splunk configuration and log analysis to proactively identify and mitigate errors, issues, and security threats.",
+            "Detected potential issues ~90% earlier before reaching production by using Dynatrace to proactively monitor system performance and flag bottlenecks and downtime risks in real time.",
+            "Minimized production impact of system changes by conducting comprehensive risk assessments via JIRA change tickets prior to deployment.",
+            "Built Splunk dashboards tracking security events, authentication attempts, and access violations, plus performance dashboards for CPU/memory usage and network traffic, improving response times and reducing downtime.",
+        ],
+        "link": "",
+        "link_label": "View project",
+        "accent": "#7f9c8c",
     },
     {
         "id": "frame-4",
@@ -127,14 +129,14 @@ FRAMES = [
         "company": "About Me",
         "role": "",
         "period": "",
-        "summary": "QA Lead Engineer & Site Reliability Engineer based in Santa Ana, CA.",
+        "summary": "Senior Quality Engineer & Site Reliability Engineer based in Santa Ana, CA.",
         "description": (
             "Always exploring how AI agents can make software testing and "
             "infrastructure work smarter. Reach me at "
             "raymondlaurente@gmail.com, or on LinkedIn "
             "(linkedin.com/in/raymond-laurente)."
         ),
-        "tags": ["Python", "C++", "Java", "SQL", "Git", "AI Test Automation"],
+        "tags": ["Python", "C++", "C", "Java", "SQL", "Bash/Shell", "Git", "AI-Augmented Testing"],
         "achievements": [
             "B.S. Computer Science — California State University, Fullerton",
             "A.S. Science & Mathematics (Honors) — Fullerton College",
