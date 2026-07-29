@@ -38,11 +38,11 @@ FRAMES = [
         ),
         "tags": ["Cursor AI", "Playwright", "Java", "GenCase", "Zephyr", "Agentic Workflows"],
         "achievements": [
-            "Lead and mentor an offshore QA team, integrating AI agent-assisted workflows into daily operations.",
-            "Design and deliver UAT scripts using AI-assisted authoring tools, accelerating script creation.",
-            "Develop story-level automation with Starling/Playwright (Java), using Cursor AI to speed up test script generation.",
-            "Orchestrate test case creation and execution using Zephyr and GenCase, an AI-driven test management tool.",
-            "Define QA strategies for AI-driven projects, addressing data variability and edge-case handling.",
+            "Improved offshore QA team consistency and sprint alignment, as measured by on-time delivery across distributed teams, by mentoring the team and embedding AI agent-assisted workflows into daily operations.",
+            "Accelerated UAT script creation, as measured by faster authoring turnaround, by designing and delivering scripts with AI-assisted authoring tools.",
+            "Sped up test script generation, as measured by reduced automation development time, by developing story-level automation with Starling/Playwright (Java) using Cursor AI.",
+            "Streamlined test case creation and execution, as measured by improved traceability across test cycles, by orchestrating testing through Zephyr and GenCase, an AI-driven test management tool.",
+            "Strengthened QA strategy for AI-driven projects, as measured by reduced defect leakage from data variability and edge cases, by defining targeted validation strategies.",
         ],
         "link": "",
         "link_label": "View project",
@@ -64,11 +64,11 @@ FRAMES = [
         ),
         "tags": ["Jenkins", "Groovy", "Splunk", "Dynatrace", "Adobe AEM", "JIRA"],
         "achievements": [
-            "Automated code deployment using Jenkins and Groovy scripts, cutting manual deployment effort by 90%.",
-            "Managed and configured Splunk for log analysis, reducing error rates by 60% through proactive monitoring.",
-            "Built Splunk dashboards tracking security events, authentication attempts, and access violations.",
-            "Used Dynatrace to monitor system performance and get ahead of bottlenecks and downtime risk.",
-            "Conducted risk assessments of system changes via JIRA to minimize impact on availability.",
+            "Cut manual deployment effort by 90%, as measured by reduced deployment time per release, by automating code deployment with Jenkins and Groovy scripts.",
+            "Reduced error rates by 60%, as measured by fewer recurring incidents, by managing and configuring Splunk for proactive log analysis.",
+            "Improved visibility into security events, as measured by faster detection of authentication anomalies and access violations, by building dedicated Splunk dashboards.",
+            "Lowered downtime risk, as measured by earlier detection of performance bottlenecks, by monitoring system performance with Dynatrace.",
+            "Minimized the impact of system changes on availability, as measured by fewer change-related incidents, by conducting risk assessments via JIRA.",
         ],
         "link": "",
         "link_label": "View project",
@@ -89,9 +89,9 @@ FRAMES = [
         ),
         "tags": ["HTML", "CSS", "PHP", "JavaScript", "SEO"],
         "achievements": [
-            "Led development of the company website, creating a polished, user-friendly interface.",
-            "Implemented SEO algorithms, increasing website traffic by 30%.",
-            "Instructed middle school students in Math and Python.",
+            "Delivered a polished, user-friendly company website, as measured by improved visitor engagement, by leading development in HTML, CSS, and JavaScript/PHP.",
+            "Grew website traffic by 30%, as measured by increased organic visits, by implementing SEO improvements.",
+            "Strengthened math and programming fundamentals for middle school students, as measured by improved classroom performance, by instructing Math and Python lessons.",
         ],
         "link": "",
         "link_label": "View project",
@@ -113,9 +113,9 @@ FRAMES = [
         ),
         "tags": ["Python", "Multithreading", "Web Scraping"],
         "achievements": [
-            "Built a multithreaded crawler bot for comprehensive site data collection.",
-            "Designed a search-tree algorithm to extract all links from HTML source code.",
-            "Added canonical tag scraping to improve data accuracy and relevance.",
+            "Enabled comprehensive site data collection at scale, as measured by faster crawl completion across large domains, by building a multithreaded crawler bot.",
+            "Improved link discovery coverage, as measured by complete extraction of all links from HTML source, by designing a search-tree algorithm.",
+            "Increased data accuracy and relevance, as measured by validated canonical tag coverage, by adding canonical tag scraping to the crawler.",
         ],
         "link": "",
         "link_label": "View project",
@@ -131,8 +131,8 @@ FRAMES = [
         "description": (
             "Always exploring how AI agents can make software testing and "
             "infrastructure work smarter. Reach me at "
-            "raymondlaurente@gmail.com, on LinkedIn "
-            "(linkedin.com/in/raymond-laurente), or at raymondlaurente.com."
+            "raymondlaurente@gmail.com, or on LinkedIn "
+            "(linkedin.com/in/raymond-laurente)."
         ),
         "tags": ["Python", "C++", "Java", "SQL", "Git", "AI Test Automation"],
         "achievements": [
