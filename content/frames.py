@@ -123,7 +123,7 @@ FRAMES = [
     },
     {
         "id": "frame-5",
-        "image": "",
+        "image": "static/images/profile.jpg",
         "company": "About Me",
         "role": "",
         "period": "",

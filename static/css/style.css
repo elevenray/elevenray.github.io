@@ -145,8 +145,14 @@ body {
    only the ground itself reads as receding in 3D (HD-2D style). */
 .floor-surface {
   position: absolute;
-  left: 0;
-  right: 0;
+  /* Overshoot on all sides: rotateX + perspective make a plane converge
+     toward the perspective-origin the further back a row sits, so a plain
+     0/100% box goes visually narrower than the room near the top — the
+     exact depth the portals' floor-overflow sits at. Without horizontal
+     overshoot too, the outer portals fall past the tilted floor's real
+     edge into the bare room background. */
+  left: -25%;
+  right: -25%;
   top: -25%;
   height: 150%;
   background-image: url('../images/cave/floor-tile.png');
@@ -193,10 +199,14 @@ body {
 /* Angled side walls: a trapezoid clipped from a plain texture strip fakes
    perspective (wide/near at the bottom, narrow/far at the top) without any
    real 3D transform, so it lines up with the floor's own vanishing point. */
+/* Confined to the wall band only (matches .back-wall's height) — it must
+   NEVER extend into the floor's y-range, or it paints over the portals'
+   floor-overflow/glow at the room's left/right edges with wall texture
+   instead of floor. */
 .side-wall {
   position: absolute;
   top: 0;
-  bottom: 0;
+  height: 40%;
   width: 6%;
   background-image: url('../images/cave/wall-tile.png');
   background-size: 34px 34px;
@@ -211,7 +221,7 @@ body {
 
 .side-wall--left {
   left: 0;
-  clip-path: polygon(0 0, 100% 34%, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 55%, 100% 100%, 0 100%);
 }
 
 .side-wall--left::after {
@@ -220,7 +230,7 @@ body {
 
 .side-wall--right {
   right: 0;
-  clip-path: polygon(0 34%, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 55%, 100% 0, 100% 100%, 0 100%);
 }
 
 .side-wall--right::after {
@@ -346,17 +356,11 @@ body {
   height: 45%;
   transform: translateX(-50%);
   background: radial-gradient(ellipse, var(--accent, var(--accent-fallback)) 0%, transparent 72%);
-  opacity: 0.55;
+  opacity: 0.5;
   mix-blend-mode: screen;
   filter: blur(3px);
   pointer-events: none;
   z-index: -1;
-  animation: ground-glow-pulse 3s ease-in-out infinite;
-}
-
-@keyframes ground-glow-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.65; }
 }
 
 .portal-arch {
@@ -528,6 +532,17 @@ body {
   text-align: center;
 }
 
+.room-avatar {
+  display: block;
+  width: clamp(96px, 16vw, 140px);
+  height: clamp(96px, 16vw, 140px);
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent, var(--accent-fallback));
+  box-shadow: 0 0 0 4px var(--mortar), 0 0 24px 2px var(--accent, var(--accent-fallback));
+}
+
 .room-period {
   color: var(--text-dim);
   font-size: 0.95rem;
@@ -636,6 +651,5 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .room, .vignette, .dungeon-frame { transition-duration: 0.2s !important; }
   .dungeon--transitioning .dungeon-frame { transform: none; filter: none; }
-  .portal, .portal::before { animation: none !important; }
   .player--walking .player-sprite { animation: none !important; }
 }

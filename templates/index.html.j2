@@ -71,6 +71,9 @@
 <section class="room" id="room-{{ frame.id }}" style="--accent: {{ frame.portal_color }};">
   <button class="room-back" aria-label="Back to the dungeon">&larr; Back</button>
   <div class="room-content">
+    {% if frame.image %}
+    <img class="room-avatar" src="{{ frame.image }}" alt="{{ frame.company }}">
+    {% endif %}
     <p class="room-period">{{ frame.period }}</p>
     <h2>{{ frame.company }}</h2>
     {% if frame.role %}<h3>{{ frame.role }}</h3>{% endif %}
