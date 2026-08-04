@@ -36,10 +36,11 @@ FRAMES = [
             "agents and custom skills across parallel test-development "
             "tracks."
         ),
-        "tags": ["Cursor AI", "Playwright", "Java", "Zephyr", "GenCase", "AI Harness Engineering"],
+        "tags": ["Cursor AI", "Playwright", "Javascript", "Zephyr", "GenCase", "AI Harness Engineering"],
         "achievements": [
             "Kept 42 releases on schedule since October 2025 across five concurrent release types (Primary, RAD, Support, Express, Emergency) — including a monthly Primary release with 500+ changes — by leading and mentoring a distributed offshore QA team and embedding AI agent-assisted workflows into daily operations.",
-            "Increased automation script development speed by ~80% across story-level test suites by migrating the team from Blackbird/Selenium to Starling/Playwright (Java) and developing AI harness engineering — orchestrating Cursor AI agents and custom skills across parallel test-development tracks.",
+            "Drove migration of the client's automation stack from Blackbird/Selenium to Starling/Playwright, moving the suites from JavaScript to TypeScript for stronger type safety and lower-flake execution.",
+            "Build and maintain end-to-end UI and API test automation in TypeScript, integrated into CI so regression runs on every build.",
             "Improved test case traceability and execution efficiency by ~90% across parallel test tracks by orchestrating work in Zephyr and GenCase, an AI-driven test management platform.",
             "Strengthened defect visibility and resolution speed by partnering closely with product managers, developers, and business stakeholders across the sprint cycle.",
             "Built QA strategies tailored to AI-driven projects, addressing data variability, model validation, and edge-case handling.",
